@@ -96,7 +96,7 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 15px;
-  height: 50px;
+  height: auto;
   width: 100%;
   max-width: 350px;
   grid-area: dropDown1;
@@ -141,7 +141,7 @@ body {
   justify-content: center;
   align-items: center;  
   border-radius: 15px;
-  height: 50px;
+  height: auto;
   width: 100%;
   max-width: 350px;
   grid-area: dropDown2;
@@ -183,7 +183,7 @@ body {
   justify-content: center;
   align-items: center;  
   border-radius: 15px;
-  height: 50px;
+  height: auto;
   width: 100%;
   max-width: 350px;
   grid-area: dropDown3;
@@ -255,17 +255,23 @@ body {
   grid-template-columns: 1fr 4fr;
   height: 25px;
   width: 140px;
+  border-radius: 10px;  
+  background-color: #ff6262;
 }
 
 .exampleLogo {
-  border: 1px solid blue;
+  display: flex;
+  align-self: center;
+  justify-self: end;  
+  height: 20px;
+  width: auto;
 }
 
 .exampleName {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid blue;
+
   font-size: 12px;
 }
 
@@ -274,18 +280,23 @@ body {
   grid-template-columns: 1fr 4fr;
   height: 25px;
   width: 140px;
+  border-radius: 10px;
+  background-color: #ff6262; 
 }
 
 .downloadLogo {
-  border: 1px solid blue;
+  display: flex;
+  align-self: center;
+  justify-self: end;  
+  height: 20px;
+  width: auto;
 }
 
 .downloadName {
   display: flex;
   justify-content: center;
   align-items: center;  
-  border: 1px solid blue;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 #footerSec {

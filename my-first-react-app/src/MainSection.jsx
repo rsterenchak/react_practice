@@ -11,14 +11,20 @@ import dropIconDown from './assets/caret-down-outline.svg'
 
 import gitIcon from './assets/github.svg'
 
+import loadIcon from './assets/refresh-outline.svg'
+import downloadIcon from './assets/download-outline.svg'
 
 // create component for entire drop down section
 
+
+
 // create components for drop1, drop2, drop3
-function DropButton1() {
+function DropButton1({
+  isActive,
+  onShow
+}) {
 
   const [isHighlighted, setHighlighted] = useState(false);
-  const [isShown, setShown] = useState(false);
 
   return (
 
@@ -28,25 +34,38 @@ function DropButton1() {
         <div className="personalDetails">Personal</div>
 
         {isHighlighted ? ( 
-        <img className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ border: "2px solid lightblue" }} src={dropIconDown} />
+        <img className="drop1"
+          onClick={onShow} 
+          onMouseEnter={() => setHighlighted(true)} 
+          onMouseLeave={() => setHighlighted(false)} 
+          style={{ border: "2px solid lightblue", cursor: 'pointer' }} 
+          src={dropIconDown} 
+        />
         ) : (
-        <img className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
+        <img className="drop1" 
+          onMouseEnter={() => setHighlighted(true)} 
+          onMouseLeave={() => setHighlighted(false)} 
+          style={{ color: "none" }} 
+          src={dropIconDown} 
+        />
         )
         }
-
-        {/* Div should generate here to show panel with parameters to be edited for personal section of resume */}
-
       </div>
+      
+      {isActive ? (<div>Div</div>) : (<div></div>)}
+      {/* Div should generate here to show panel with parameters to be edited for personal section of resume */}
+
     </div>
             
   ); 
 }
 
-function DropButton2() {
+function DropButton2({
+  isActive,
+  onShow
+}) {
 
   const [isHighlighted, setHighlighted] = useState(false);
-  const [isShown, setShown] = useState(false);
-
 
   return (
     <div className="dropDown2">
@@ -55,21 +74,33 @@ function DropButton2() {
         <div className="educationDetails">Education</div>
 
         {isHighlighted ? ( 
-        <img className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ border: "2px solid lightblue" }} src={dropIconDown} />
+        <img 
+          onClick={onShow}
+          className="drop1" 
+          onMouseEnter={() => setHighlighted(true)} 
+          onMouseLeave={() => setHighlighted(false)} 
+          style={{ border: "2px solid lightblue", cursor: 'pointer' }} 
+          src={dropIconDown} 
+        />
         ) : (
         <img className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
         )
         }
 
       </div>
+
+      {isActive ? (<div>Div</div>) : (<div></div>)}
+
     </div>
   ); 
 }
 
-function DropButton3() {
+function DropButton3({
+  isActive,
+  onShow
+}) {
 
   const [isHighlighted, setHighlighted] = useState(false);
-  const [isShown, setShown] = useState(false);
 
   return (
     <div className="dropDown3">
@@ -77,21 +108,100 @@ function DropButton3() {
         <img className="experienceIcon" src={bagIcon}/>
         <div className="experienceDetails">Experience</div>
         {isHighlighted ? ( 
-        <img className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ border: "2px solid lightblue" }} src={dropIconDown} />
+        <img
+          onClick={onShow} 
+          className="drop1" 
+          onMouseEnter={() => setHighlighted(true)} 
+          onMouseLeave={() => setHighlighted(false)} 
+          style={{ border: "2px solid lightblue", cursor: 'pointer' }} 
+          src={dropIconDown} 
+        />
         ) : (
         <img className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
         )
         }
       </div>
+
+      {isActive ? (<div>Div</div>) : (<div></div>)}
+
     </div>
   ); 
 }
 
+function LoadButton(){
+
+  const [isHovered, setHovered] = useState(false);
+  const [isMouse, setMouseClick] = useState(false); // setup another state for click down/up
+
+  const boxStyle = {
+    boxShadow: isHovered ? isMouse ? 'none' : '0 2px 4px rgba(0, 0, 0, 0.4)' : "none",
+    backgroundColor: isMouse ? '#c40000' : '#ff6262',
+    cursor: 'pointer'
+    
+  }
+
+  const [isShown, setShown] = useState(false);
+
+  return (
+
+    
+    <div className="loadExampleBox" 
+      onMouseEnter={() => setHovered(true)} 
+      onMouseLeave={() => setHovered(false)}
+
+      onMouseDown={() => setMouseClick(true)} 
+      onMouseUp={() => setMouseClick(false)}
+
+      style={boxStyle}>
+      <img className="exampleLogo" src={loadIcon}/>
+      <div className="exampleName">Load Example</div>
+    </div>
+
+  ); 
+
+
+}
+
+function DownloadButton(){
+
+  const [isHovered, setHovered] = useState(false);
+  const [isMouse, setMouseClick] = useState(false); // setup another state for click down/up
+
+  const boxStyle = {
+    boxShadow: isHovered ? isMouse ? 'none' : '0 2px 4px rgba(0, 0, 0, 0.4)' : "none",
+    backgroundColor: isMouse ? '#c40000' : '#ff6262',
+    cursor: 'pointer'
+    
+  }
+
+  const [isShown, setShown] = useState(false);
+
+  return (
+
+    
+    <div className="downloadBox"
+    onMouseEnter={() => setHovered(true)} 
+    onMouseLeave={() => setHovered(false)}
+
+    onMouseDown={() => setMouseClick(true)} 
+    onMouseUp={() => setMouseClick(false)}
+
+    style={boxStyle}>
+      <img className="downloadLogo" src={downloadIcon}/>
+      <div className="downloadName">Download (.pdf)</div>
+    </div>
+
+  ); 
+
+
+}
 
 // <Button text="Click Me!" color="blue" fontSize={12} /> 
 
 function MainSection() {
 
+  // Set up state for dropDown menu components
+  const [activeIndex, setActiveIndex] = useState(0);
 
   let buttonNames = ['Personal', 'Education', 'Experience'];
 
@@ -116,13 +226,22 @@ function MainSection() {
 
 
         {/* React Component #1 */}
-        <DropButton1 />
+        <DropButton1 
+          isActive={activeIndex === 0}
+          onShow={() => setActiveIndex(0)}
+        />
 
         {/* React Component #2 */}
-        <DropButton2 />
+        <DropButton2 
+          isActive={activeIndex === 1}
+          onShow={() => setActiveIndex(1)} 
+        />
 
         {/* React Component #3 */}
-        <DropButton3 />
+        <DropButton3 
+          isActive={activeIndex === 2}
+          onShow={() => setActiveIndex(2)}        
+        />
 
       </div>
 
@@ -130,21 +249,18 @@ function MainSection() {
         {/* React Component #4 */}
         <div id="formatOptions">
           <div className="area4">
-            <div className="loadExampleBox">
-              <div className="exampleLogo" />
-              <div className="exampleName">Load Example</div>
-            </div>
-            <div className="downloadBox">
-              <div className="downloadLogo" />
-              <div className="downloadName">Download (.pdf)</div>
-            </div>
+
+            <LoadButton />
+            
+            <DownloadButton />
+
           </div>
         </div>
       </div>
       <div id="footerSec">
         <div id="footerArea">
-          <a href=''><div className="footName">@rsterenchak</div></a>
-          <img className="footLogo" src={gitIcon} alt={'github icon link'}></img>
+          <div className="footName">@rsterenchak</div>
+          <a href='https://github.com/rsterenchak' target="_blank"><img className="footLogo" src={gitIcon} alt={'github icon link'}></img></a>
         </div>
       </div>
     </div>
