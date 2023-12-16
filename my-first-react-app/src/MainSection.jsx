@@ -14,17 +14,56 @@ import gitIcon from './assets/github.svg'
 import loadIcon from './assets/refresh-outline.svg'
 import downloadIcon from './assets/download-outline.svg'
 
-// create component for entire drop down section
+import mailIcon from './assets/mail.svg'
+import phoneIcon from './assets/call.svg'
+import locationIcon from './assets/location.svg'
+
+import { personalDetails } from './personalDetails.js';
 
 
+
+    const personal = {
+      name: '',
+      email:  '',
+      phone:  '',
+      address:  ''
+    };
 
 // create components for drop1, drop2, drop3
 function DropButton1({
   isActive,
-  onShow
+  onShow, 
+  isName,
+  isEmail,
+  isPhone,
+  isAddress,
+  changeName,
+  changeEmail,
+  changePhone,
+  changeAddress
+  
 }) {
 
-  const [isHighlighted, setHighlighted] = useState(false);
+
+    const [isHighlighted, setHighlighted] = useState(false);
+
+    // const [isName, setName] = useState(''); // lift Up to mainSection
+    // const [isEmail, setEmail] = useState(''); // lift Up to mainSection
+    // const [isPhone, setPhone] = useState(''); // lift Up to mainSection
+    // const [isAddress, setAddress] = useState(''); // lift Up to mainSection
+
+    
+
+/*     const setNameValue = (event) => {
+      if (event.key == "Enter"){
+        personal.name = event.target.value;
+        console.log(personal.name);
+      }
+    } */
+    // Create personal object
+    // const currentPersonal = personalDetails(nam, emai, phon, add);
+
+
 
   return (
 
@@ -52,7 +91,46 @@ function DropButton1({
         }
       </div>
       
-      {isActive ? (<div>Div</div>) : (<div></div>)}
+      {isActive ? (
+      <div className='formPersonal'>
+
+        <p className='formName'>Name:</p>
+        <input
+          onChange={changeName} 
+          className='nameInput' 
+          type='text'
+          value={isName}
+        >
+          </input>
+      
+        <p className='formEmail'>Email:</p>
+        <input 
+          onChange={changeEmail}
+          className='emailInput' 
+          type='text'
+          value={isEmail}
+        >
+        </input>
+      
+        <p className='formPhone'>Phone #:</p>
+        <input
+          onChange={changePhone} 
+          className='phoneInput' 
+          type='text'
+          value={isPhone}
+        >
+        </input>
+      
+        <p className='formAddress'>Address:</p>
+        <input
+          onChange={changeAddress} 
+          className='addressInput' 
+          type='text'
+          value={isAddress}
+        >
+        </input>
+      
+      </div>) : (<div></div>)}
       {/* Div should generate here to show panel with parameters to be edited for personal section of resume */}
 
     </div>
@@ -64,6 +142,10 @@ function DropButton2({
   isActive,
   onShow
 }) {
+
+  // Create array that will be meant to hold Education objects
+  // values for object - (School, Degree, StartDate, EndDate, Location)
+
 
   const [isHighlighted, setHighlighted] = useState(false);
 
@@ -89,7 +171,14 @@ function DropButton2({
 
       </div>
 
-      {isActive ? (<div>Div</div>) : (<div></div>)}
+      {isActive ? (
+      <div className='educationList'>
+        
+        <input className='educationItem'></input>
+        <div className='addEducation'>+</div>
+  
+      </div>
+      ) : (<div></div>)}
 
     </div>
   ); 
@@ -203,8 +292,29 @@ function MainSection() {
   // Set up state for dropDown menu components
   const [activeIndex, setActiveIndex] = useState(0);
 
-  let buttonNames = ['Personal', 'Education', 'Experience'];
+  const [activeName, setActiveName] = useState('');
+  const [activeEmail, setActiveEmail] = useState('');
+  const [activePhone, setActivePhone] = useState('');
+  const [activeAddress, setActiveAddress] = useState('');
 
+
+  let buttonNames = ['Personal', 'Education', 'Experience'];
+  
+  function handleNameChange (e){
+    setActiveName(e.target.value);
+  }
+
+  function handleEmailChange (e){
+    setActiveEmail(e.target.value);
+  }
+
+  function handlePhoneChange (e){
+    setActivePhone(e.target.value);
+  }
+  
+  function handleAddressChange (e){
+    setActiveAddress(e.target.value);
+  }  
 
     return <>
     <div className="sideBar">
@@ -227,8 +337,16 @@ function MainSection() {
 
         {/* React Component #1 */}
         <DropButton1 
+          changeName={handleNameChange}
+          changeEmail={handleEmailChange}
+          changePhone={handlePhoneChange}
+          changeAddress={handleAddressChange}
           isActive={activeIndex === 0}
           onShow={() => setActiveIndex(0)}
+          isName={activeName}
+          isEmail={activeEmail}
+          isPhone={activePhone}
+          isAddress={activeAddress}
         />
 
         {/* React Component #2 */}
@@ -273,12 +391,12 @@ function MainSection() {
           <div className="topSpace1" />
           <div className="topInfo">
             <div className="name">
-              <div className="fullName">Robert Sterenchak</div>
+              <div className="fullName">{activeName}</div>
             </div>
             <div className="contact">
-              <div className="email">email</div>
-              <div className="phone">phone</div>
-              <div className="location">location</div>
+              <div className="email"><img src={mailIcon}/>{activeEmail}</div>
+              <div className="phone"><img src={phoneIcon}/>{activePhone}</div>
+              <div className="location"><img src={locationIcon}/>{activeAddress}</div>
             </div>
           </div>
           <div className="topSpace2" />

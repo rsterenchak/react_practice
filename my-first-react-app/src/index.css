@@ -108,10 +108,78 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   height: 45px;
   width: 90%;
 }
+
+.formPersonal {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 35px 35px 35px 35px;
+  grid-template-areas: 
+  'formName nameInput'
+  'formEmail emailInput'
+  'formPhone phoneInput'
+  'formAddress addressInput'
+  ;
+  width: auto;
+  height: auto;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+
+.formName {
+  display: flex;
+  justify-content: end;
+  grid-area: formName;
+
+}
+
+.formEmail {
+  display: flex;
+  justify-content: end;  
+  grid-area: formEmail;
+
+}
+
+.formPhone {
+  display: flex;
+  justify-content: end;  
+  grid-area: formPhone;
+}
+
+.formAddress {
+  display: flex;
+  justify-content: end;  
+  grid-area: formAddress;
+
+}
+
+.nameInput {
+  height: 20px;
+  grid-area: nameInput;
+}
+
+.emailInput {
+  height: 20px;
+  grid-area: emailInput;
+}
+
+.phoneInput {
+  height: 20px;
+  grid-area: phoneInput;
+}
+
+.addressInput {
+  height: 20px;
+  grid-area: addressInput;
+}
+
+
 
 .personalIcon {
   height: 30px;
@@ -156,6 +224,28 @@ body {
   gap: 10px;  
   height: 45px;
   width: 90%;
+}
+
+.educationList {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 5px;
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+.educationItem {
+  display: grid;
+  background-color: lightgrey;
+  justify-content: center;
+  border: 1px solid blue;
+}
+
+.addEducation {
+  display: grid;
+  justify-content: center;
+  border: 1px solid green;
 }
 
 .educationIcon {
@@ -425,40 +515,58 @@ body {
   text-align: center;
   height: auto;
   width: auto;
-  font-size: 22px;
+  gap: 10px;
+  font-size: 19px;
+
 }
 
 .email {
+  color: white;
   display: flex;
-  background-color: white;
   height: auto;
   width: auto;
   grid-area: email;
   align-items: center;
-  justify-content: center;  
-  border: 1px solid blue;
+  justify-content: center; 
+   
+}
+
+.email > img {
+  width: 20px;
+  height: auto;
+  margin-right: 5px;
 }
 
 .phone {
+  color: white;
   display: flex;
-  background-color: white;
   height: auto;
   width: auto;  
   grid-area: phone;
   align-items: center;
   justify-content: center;  
-  border: 1px solid blue;
+}
+
+.phone > img {
+  width: 20px;
+  height: auto;
+  margin-right: 5px;
 }
 
 .location {
+  color: white;
   display: flex;
-  background-color: white;
   height: auto;
   width: auto;
   grid-area: location;
   align-items: center;
   justify-content: center;  
-  border: 1px solid blue;
+}
+
+.location > img {
+  width: 20px;
+  height: auto;
+  margin-right: 5px;
 }
 
 
@@ -667,17 +775,36 @@ body {
   }
   
   .dropDown1 {
-    height: 60px;
+    height: auto;
     max-width: 550px;
   }
   
+  .formPersonal {
+    gap: 6px;
+    grid-template-columns: 1fr 6fr;
+    width: 75%;
+  }
+
+  .nameInput {}
+
+  .emailInput {}
+
+  .phoneInput {}
+
+  .addressInput {}
+
   .dropDown2 {
-    height: 60px;
+    height: auto;
     max-width: 550px;
   }  
   
+  .educationList {
+    width: 75%;
+
+  }
+
   .dropDown3 {
-    height: 60px;
+    height: auto;
     max-width: 550px;
   }  
   
