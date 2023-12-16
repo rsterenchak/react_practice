@@ -21,13 +21,13 @@ import locationIcon from './assets/location.svg'
 import { personalDetails } from './personalDetails.js';
 
 
-
+/* 
     const personal = {
       name: '',
       email:  '',
       phone:  '',
       address:  ''
-    };
+    }; */
 
 // create components for drop1, drop2, drop3
 function DropButton1({
@@ -81,7 +81,9 @@ function DropButton1({
           src={dropIconDown} 
         />
         ) : (
-        <img className="drop1" 
+        <img 
+          onClick={onShow}  
+          className="drop1" 
           onMouseEnter={() => setHighlighted(true)} 
           onMouseLeave={() => setHighlighted(false)} 
           style={{ color: "none" }} 
@@ -145,9 +147,51 @@ function DropButton2({
 
   // Create array that will be meant to hold Education objects
   // values for object - (School, Degree, StartDate, EndDate, Location)
+  const educationList = [{
+    id: 0,
+    title: 'Item 1',
+    School: '',
+    Degree: '',
+    StartDate: '',
+    EndDate: '',
+    Location: '',
+  }];
+  
 
 
   const [isHighlighted, setHighlighted] = useState(false);
+  const [isButtonHighlighted, setButtonHighlighted] = useState(false);
+  // const [isItemHighlighted, setItemHighlighted] = useState(false);
+  
+  const [isEducationList, setEducationList] = useState(educationList);
+
+
+  const listItems = isEducationList.map(item => 
+
+    <EducationElement item={item}/>
+    );
+
+  {/* When items are set, set the title value to be 0 to signify submit completed */}
+
+  function addItem(){
+    console.log('Runs addItem');
+
+    let newItem = {
+      id: isEducationList.length,
+      title: 'Item ' + (isEducationList.length + 1),
+      School: '',
+      Degree: '',
+      StartDate: '',
+      EndDate: '',
+      Location: '',
+    }
+
+    isEducationList.push(newItem); // sets new item to array
+  
+    setEducationList(isEducationList); // set new item to state -> DOM 
+    // setButtonHighlighted(false);
+    
+  }
 
   return (
     <div className="dropDown2">
@@ -165,7 +209,7 @@ function DropButton2({
           src={dropIconDown} 
         />
         ) : (
-        <img className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
+        <img onClick={onShow} className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
         )
         }
 
@@ -174,14 +218,70 @@ function DropButton2({
       {isActive ? (
       <div className='educationList'>
         
-        <input className='educationItem'></input>
-        <div className='addEducation'>+</div>
-  
+        <ul>
+
+          {listItems}
+        
+        </ul>
+        
+        {isButtonHighlighted ? ( 
+
+        <div 
+          onClick={addItem}
+          className='addEducation'
+          onMouseEnter={() => setButtonHighlighted(true)} 
+          onMouseLeave={() => setButtonHighlighted(false)} 
+          style={{ backgroundColor: "lightblue", cursor: 'pointer'}}        
+        >+
+        </div>
+        
+        ) : (
+      
+        <div 
+          onClick={addItem}
+          className='addEducation'
+          onMouseEnter={() => setButtonHighlighted(true)} 
+          onMouseLeave={() => setButtonHighlighted(false)} 
+          style={{ backgroundColor: "white", cursor: 'pointer'}}        
+        >+
+        </div>
+        )}
+        
       </div>
       ) : (<div></div>)}
 
     </div>
   ); 
+}
+
+
+{/** Try lowering states for isItemHighlighted into individual components, containing independent states */}
+function EducationElement({
+  item
+}) {
+
+  const [isItemHighlighted, setItemHighlighted] = useState(false);
+
+  const myStyle = {
+    border: isItemHighlighted ? '1px solid red' : '1px solid blue'
+    
+  }
+
+return(
+
+  <li 
+    onClick={console.log()}
+    onMouseEnter={() => setItemHighlighted(true)} 
+    onMouseLeave={() => setItemHighlighted(false)} 
+    className='educationItem' 
+    key={item.id} 
+    style={myStyle}
+  >
+    {item.title}
+  </li>
+
+);
+
 }
 
 function DropButton3({
@@ -206,7 +306,7 @@ function DropButton3({
           src={dropIconDown} 
         />
         ) : (
-        <img className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
+        <img onClick={onShow} className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
         )
         }
       </div>
@@ -296,6 +396,7 @@ function MainSection() {
   const [activeEmail, setActiveEmail] = useState('');
   const [activePhone, setActivePhone] = useState('');
   const [activeAddress, setActiveAddress] = useState('');
+
 
 
   let buttonNames = ['Personal', 'Education', 'Experience'];

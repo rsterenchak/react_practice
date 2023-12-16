@@ -221,7 +221,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;  
+  gap: 15px;  
   height: 45px;
   width: 90%;
 }
@@ -229,23 +229,35 @@ body {
 .educationList {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 5px;
+  grid-template-rows: repeat(1fr);
+  gap: 10px;
   width: 90%;
   margin-bottom: 10px;
+
 }
 
-.educationItem {
+ul {
   display: grid;
-  background-color: lightgrey;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+}
+
+
+.educationItem {
+  display: flex;
   justify-content: center;
-  border: 1px solid blue;
+  border: 1px solid black;
+  cursor: pointer;
 }
 
 .addEducation {
   display: grid;
+  font-weight: bold;
   justify-content: center;
-  border: 1px solid green;
+  border: 1px solid black;
+  cursor: pointer;
 }
 
 .educationIcon {
