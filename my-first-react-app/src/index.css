@@ -233,15 +233,16 @@ body {
   gap: 10px;
   width: 90%;
   margin-bottom: 10px;
-
+  border: 1px solid red;
 }
 
 ul {
   display: grid;
   list-style-type: none;
+  gap: 5px;
   margin: 0;
   padding: 0;
-
+  border: 1px solid red;
 }
 
 
@@ -278,6 +279,123 @@ ul {
   width: 30px;
   border: 1px solid red;
 }
+
+
+.formEducation {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 35px 35px 35px 35px 35px;
+  grid-template-areas: 
+  'formSchool schoolInput'
+  'formDegree degreeInput'
+  'formStartDate startDateInput'
+  'formEndDate endDateInput'
+  'formLocation locationInput'
+  ;
+  width: auto;
+  height: auto;
+  font-size: 11px;
+  margin-bottom: 10px;
+}
+
+.formEducationControl {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  gap: 15px;
+  height: auto;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.formEducationSubmit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 27px;
+  width: 72px;
+  border-radius: 5px;
+}
+
+.formEducationCancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 27px;
+  width: 72px;
+  border-radius: 5px;
+  background-color: lightgreen;
+}
+
+
+
+.formSchool {
+  display: flex;
+  justify-content: end;
+  grid-area: formSchool;
+
+}
+
+.formDegree {
+  display: flex;
+  justify-content: end;
+  grid-area: formDegree;
+
+}
+
+.formStartDate {
+  display: flex;
+  justify-content: end;  
+  grid-area: formStartDate;
+  font-size: 12px;
+}
+
+.formEndDate {
+  display: flex;
+  justify-content: end;  
+  grid-area: formEndDate;
+  font-size: 11px;
+}
+
+.formLocation {
+  display: flex;
+  justify-content: end;  
+  grid-area: formLocation;
+
+}
+
+.schoolInput {
+  height: 20px;
+  grid-area: schoolInput;
+}
+
+
+.degreeInput {
+  height: 20px;
+  grid-area: degreeInput;
+}
+
+.startDateInput {
+  height: 20px;
+  grid-area: startDateInput;
+}
+
+.endDateInput {
+  height: 20px;
+  grid-area: endDateInput;
+}
+
+.locationInput {
+  height: 20px;
+  grid-area: locationInput;
+}
+
+
+
 
 .dropDown3 {
   display: flex;

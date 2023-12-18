@@ -151,27 +151,83 @@ function DropButton2({
     id: 0,
     title: 'Item 1',
     School: '',
-    Degree: '',
+    Degree: 'Item 1',
+    StartDate: '',
+    EndDate: '',
+    Location: '',
+  },
+  {
+    id: 1,
+    title: 'Item 2',
+    School: '',
+    Degree: 'Item 2',
     StartDate: '',
     EndDate: '',
     Location: '',
   }];
   
+  const [activeMenu, setActiveMenu] = useState(0); 
 
+  const [isClickable, setClickable] = useState(true);
 
   const [isHighlighted, setHighlighted] = useState(false);
   const [isButtonHighlighted, setButtonHighlighted] = useState(false);
-  // const [isItemHighlighted, setItemHighlighted] = useState(false);
   
   const [isEducationList, setEducationList] = useState(educationList);
 
+  const [isSelectedEducationId, setSelectedEducationId] = useState(0);
+
+  function setupEditMenu(itemKey){
+
+    setActiveMenu(1)
+    setSelectedEducationId(itemKey);
+
+
+  }
 
   const listItems = isEducationList.map(item => 
 
-    <EducationElement item={item}/>
+    <EducationElement 
+    item={item}
+    key={item.id}
+    isMenu={activeMenu === 1}
+    onShowEdit={() => 
+      setupEditMenu(item.id)
+    } 
+    />
+    
     );
 
-  {/* When items are set, set the title value to be 0 to signify submit completed */}
+  {/** try creating custom function for onShowEdit*/}
+  
+  const clickabilityStyling = {
+    backgroundColor: isButtonHighlighted ? "lightblue" : "white", 
+    cursor: 'pointer',
+    pointerEvents: isClickable ? 'auto' : 'none' 
+      
+  }  
+
+  {/* Check educationList last element to see if School property is not equal to ('') */}
+  function checkItem(){
+
+    console.log('Runs checkItem');
+    
+    let lastItem = isEducationList.length - 1;
+
+    console.log(isEducationList[lastItem].School);
+
+    if((isEducationList[lastItem].School) === ''){
+
+      setClickable(false);
+
+    }
+    else {
+
+      setClickable(true);
+
+    }
+
+  }
 
   function addItem(){
     console.log('Runs addItem');
@@ -191,7 +247,12 @@ function DropButton2({
     setEducationList(isEducationList); // set new item to state -> DOM 
     // setButtonHighlighted(false);
     
+    checkItem(); // Determines '+' button clickability using isClickable
+
+
   }
+
+ // ***** Next -> Create component for edit menu section *****
 
   return (
     <div className="dropDown2">
@@ -215,7 +276,7 @@ function DropButton2({
 
       </div>
 
-      {isActive ? (
+      {activeMenu === 0 && isActive ? (
       <div className='educationList'>
         
         <ul>
@@ -224,14 +285,18 @@ function DropButton2({
         
         </ul>
         
-        {isButtonHighlighted ? ( 
+      {/** Disable buttons ability to highlight with state, checks bottom ul element */}
+
+
+
+      {isButtonHighlighted ? ( 
 
         <div 
           onClick={addItem}
           className='addEducation'
           onMouseEnter={() => setButtonHighlighted(true)} 
           onMouseLeave={() => setButtonHighlighted(false)} 
-          style={{ backgroundColor: "lightblue", cursor: 'pointer'}}        
+          style={clickabilityStyling}        
         >+
         </div>
         
@@ -242,22 +307,46 @@ function DropButton2({
           className='addEducation'
           onMouseEnter={() => setButtonHighlighted(true)} 
           onMouseLeave={() => setButtonHighlighted(false)} 
-          style={{ backgroundColor: "white", cursor: 'pointer'}}        
+          style={clickabilityStyling}        
         >+
         </div>
-        )}
+      )}
         
-      </div>
-      ) : (<div></div>)}
+      
 
-    </div>
-  ); 
+
+        </div>
+        ) : (<div></div>)}
+
+      {activeMenu === 1 && isActive ? (
+      
+        <EducationEditMenu 
+          sendKey={isSelectedEducationId} 
+          isMenu={activeMenu === 0}
+          onShowEdit={() => setActiveMenu(0)}
+          educationList={isEducationList}
+        /> 
+      
+      ) : (
+      
+        <div></div>
+      
+      )}
+
+        </div>        
+      ); 
+
+
+
 }
 
 
 {/** Try lowering states for isItemHighlighted into individual components, containing independent states */}
 function EducationElement({
-  item
+  item,
+  isMenu,
+  onShowEdit,
+  sendKey
 }) {
 
   const [isItemHighlighted, setItemHighlighted] = useState(false);
@@ -266,11 +355,15 @@ function EducationElement({
     border: isItemHighlighted ? '1px solid red' : '1px solid blue'
     
   }
+  
+  {/** isActive tracks regular div, isEdit will track edit component rendering*/}
+  {/** On clicking an <li>, set isEdit state to equal 1(EditMenu) instead of 0(MainMenu)  */}
+
 
 return(
 
   <li 
-    onClick={console.log()}
+    onClick={onShowEdit}
     onMouseEnter={() => setItemHighlighted(true)} 
     onMouseLeave={() => setItemHighlighted(false)} 
     className='educationItem' 
@@ -281,6 +374,178 @@ return(
   </li>
 
 );
+
+}
+
+function EducationEditMenu({
+  item,
+  isMenu,
+  onShowEdit,
+  sendKey,
+  educationList
+}){
+
+  const filteredItemSchool = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.School
+  );  
+
+  const filteredItemDegree = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.Degree
+  );
+
+  const filteredItemStart = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.StartDate
+  );  
+
+  const filteredItemFinished = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.EndDate
+  );  
+
+  const filteredItemLocation = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.Location
+  );  
+
+
+  const [isSubmitHovered, setSubmitHovered] = useState(false);
+  const [isCancelHovered, setCancelHovered] = useState(false); 
+
+  const [isSchool, setSchool] = useState(filteredItemSchool);
+  const [isDegree, setDegree] = useState(filteredItemDegree);
+  const [isStart, setStart] = useState(filteredItemStart);
+  const [isFinished, setFinished] = useState(filteredItemFinished);
+  const [isLocation, setLocation] = useState(filteredItemLocation);
+
+  // Run Validation function, based on validation also update the educationList using states
+  // 12/18/2023 - Last worked on function, setting degree in isEducation is working,
+  // isEducation is set when calling this (component) within (DropButton2)
+  function handleListUpdate(){
+
+    educationList[sendKey].Degree = isDegree; // setting is working!!!
+
+    console.log(educationList[sendKey]);
+  }
+
+  function handleValidation() {
+
+    handleListUpdate();
+
+  }
+
+
+
+
+  function handleSchoolChange (e){
+    setSchool(e.target.value);
+  }
+
+  function handleDegreeChange (e){
+    setDegree(e.target.value);
+  }  
+
+  function handleStartChange (e){
+    setStart(e.target.value);
+  } 
+
+  function handleEndChange (e){
+    setFinished(e.target.value);
+  } 
+
+  function handleLocationChange (e){
+    setLocation(e.target.value);
+  } 
+
+
+  const submitStylings = {
+    
+    backgroundColor: isSubmitHovered ? '#86c5da' : '#c1e1ec',
+    cursor: 'pointer'
+
+  }
+
+  const cancelStylings = {
+
+    backgroundColor: isCancelHovered ? '#64e764' : 'lightgreen',
+    cursor: 'pointer'
+
+  }
+
+  return(
+    <>
+      <div className='formEducation'>
+
+        <p className='formSchool'>School:</p>
+        <input
+          onChange={handleSchoolChange}
+          className='schoolInput' 
+          type='text'
+          value={isSchool}
+        >
+        </input>
+
+        <p className='formDegree'>Degree:</p>
+        <input
+          onChange={handleDegreeChange}
+          className='degreeInput' 
+          type='text'
+          value={isDegree}
+        >
+          </input>
+
+        <p className='formStartDate'>Start:</p>
+        <input 
+          onChange={handleStartChange}
+          className='startDateInput' 
+          type='date'
+          value={isStart}
+        >
+        </input>
+
+        <p className='formEndDate'>Finished:</p>
+        <input 
+          onChange={handleEndChange}
+          className='endDateInput' 
+          type='date'
+          value={isFinished}
+        >
+        </input>
+
+        <p className='formLocation'>Location:</p>
+        <input 
+          onChange={handleLocationChange}
+          className='locationInput' 
+          type='text'
+          value={isLocation}
+        >
+        </input>
+      </div>
+
+      <div className='formEducationControl'>
+
+        <div 
+          onClick={handleListUpdate} // Perform Validation
+          className='formEducationSubmit'
+          onMouseEnter={() => setSubmitHovered(true)}
+          onMouseLeave={() => setSubmitHovered(false)}
+          style={submitStylings}
+        >
+          Submit
+        
+        </div>
+        <div 
+          onClick={onShowEdit}
+          className='formEducationCancel'
+          onMouseEnter={() => setCancelHovered(true)}
+          onMouseLeave={() => setCancelHovered(false)}
+          style={cancelStylings}
+        >
+          Cancel
+        
+        </div>
+
+      </div>
+
+    </>
+  );
 
 }
 
