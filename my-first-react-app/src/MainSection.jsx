@@ -409,49 +409,79 @@ function EducationEditMenu({
   const [isSubmitHovered, setSubmitHovered] = useState(false);
   const [isCancelHovered, setCancelHovered] = useState(false); 
 
+  const [isSchoolInput, setSchoolInput] = useState(false);
+
   const [isSchool, setSchool] = useState(filteredItemSchool);
   const [isDegree, setDegree] = useState(filteredItemDegree);
   const [isStart, setStart] = useState(filteredItemStart);
   const [isFinished, setFinished] = useState(filteredItemFinished);
   const [isLocation, setLocation] = useState(filteredItemLocation);
 
+
+
   // Run Validation function, based on validation also update the educationList using states
   // 12/18/2023 - Last worked on function, setting degree in isEducation is working,
   // isEducation is set when calling this (component) within (DropButton2)
   function handleListUpdate(){
 
-    educationList[sendKey].Degree = isDegree; // setting is working!!!
+    if(handleValidation() === true){
+
+      setSchoolInput(true)
+
+    }
+
+    else{
+
+      setSchoolInput(false)
+
+      educationList[sendKey].School = isSchool;
+      educationList[sendKey].title = isDegree;
+      educationList[sendKey].Degree = isDegree;
+      educationList[sendKey].StartDate = isStart;
+      educationList[sendKey].EndDate = isFinished;    
+
+    }
 
     console.log(educationList[sendKey]);
   }
 
-  function handleValidation() {
+  function handleValidation(){
 
-    handleListUpdate();
+    if(isSchool.length > 0){
+
+      return false
+
+    }
+    else{
+
+      return true
+
+    }
+
 
   }
 
 
+  function handleSchoolChange (a){
+  
+    setSchool(a.target.value);
 
-
-  function handleSchoolChange (e){
-    setSchool(e.target.value);
   }
 
   function handleDegreeChange (e){
     setDegree(e.target.value);
   }  
 
-  function handleStartChange (e){
-    setStart(e.target.value);
+  function handleStartChange (b){
+    setStart(b.target.value);
   } 
 
-  function handleEndChange (e){
-    setFinished(e.target.value);
+  function handleEndChange (c){
+    setFinished(c.target.value);
   } 
 
-  function handleLocationChange (e){
-    setLocation(e.target.value);
+  function handleLocationChange (d){
+    setLocation(d.target.value);
   } 
 
 
@@ -469,6 +499,11 @@ function EducationEditMenu({
 
   }
 
+  const schoolInputStylings = {
+    border: isSchoolInput ? '1px solid red' : '1px solid black'
+
+  }
+
   return(
     <>
       <div className='formEducation'>
@@ -478,7 +513,8 @@ function EducationEditMenu({
           onChange={handleSchoolChange}
           className='schoolInput' 
           type='text'
-          value={isSchool}
+          value={isSchool} // value should be taken from educationList initially, then allowed to change from isSchool
+          style={schoolInputStylings}
         >
         </input>
 
