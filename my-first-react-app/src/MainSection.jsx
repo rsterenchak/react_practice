@@ -155,15 +155,6 @@ function DropButton2({
     StartDate: '',
     EndDate: '',
     Location: '',
-  },
-  {
-    id: 1,
-    title: 'Item 2',
-    School: '',
-    Degree: 'Item 2',
-    StartDate: '',
-    EndDate: '',
-    Location: '',
   }];
   
   const [activeMenu, setActiveMenu] = useState(0); 
@@ -323,8 +314,12 @@ function DropButton2({
         <EducationEditMenu 
           sendKey={isSelectedEducationId} 
           isMenu={activeMenu === 0}
-          onShowEdit={() => setActiveMenu(0)}
+          onShowEdit={() => 
+            setActiveMenu(0)
+            
+          }
           educationList={isEducationList}
+          runCheck ={() => checkItem()}
         /> 
       
       ) : (
@@ -382,7 +377,8 @@ function EducationEditMenu({
   isMenu,
   onShowEdit,
   sendKey,
-  educationList
+  educationList, 
+  runCheck
 }){
 
   const filteredItemSchool = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
@@ -424,6 +420,8 @@ function EducationEditMenu({
   // isEducation is set when calling this (component) within (DropButton2)
   function handleListUpdate(){
 
+    console.log(isSchool.length);
+
     if(handleValidation() === true){
 
       setSchoolInput(true)
@@ -440,14 +438,18 @@ function EducationEditMenu({
       educationList[sendKey].StartDate = isStart;
       educationList[sendKey].EndDate = isFinished;    
 
+      onShowEdit();
+      // runCheck();
     }
+
+    
 
     console.log(educationList[sendKey]);
   }
 
   function handleValidation(){
 
-    if(isSchool.length > 0){
+    if((isSchool.length > 0) && (isDegree.length > 0)){
 
       return false
 
