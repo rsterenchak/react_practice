@@ -151,8 +151,6 @@ function DropButton2({
 
   const [activeMenu, setActiveMenu] = useState(0); 
 
-  // const [isClickable, setClickable] = useState(true); //  lift up clickability and function ???
-
   const [isHighlighted, setHighlighted] = useState(false);
   const [isButtonHighlighted, setButtonHighlighted] = useState(false);
 
@@ -295,6 +293,7 @@ function DropButton2({
             
           }
           educationList={isEducationList}
+          setupEducationList={() => setEducationList()}
           runCheck ={() => checkClickable()}
         /> 
       
@@ -348,13 +347,63 @@ return(
 
 }
 
+
+{/** Currently working on elements to be added to middle section when array is populated */}
+function EducationNameElement({
+  item
+}) {
+
+  const myStyle = {
+    
+  }
+
+return(
+
+  <div 
+    className='educationName' 
+    style={myStyle}
+  >
+
+    <div className='educationSchool'>{item.School}</div>
+    <div className='educationDegree'>{item.Degree}</div>
+
+  </div>
+
+);
+
+}
+
+function EducationDateElement({
+  item
+}) {
+
+  const myStyle = {
+    
+  }
+
+return(
+
+  <div 
+    className='educationDate' 
+    style={myStyle}
+  >
+
+    {item.StartDate}
+    {item.EndDate}
+
+
+  </div>
+
+);
+
+}
+
 function EducationEditMenu({
-  item,
-  isMenu,
   onShowEdit,
   sendKey,
   educationList, 
-  runCheck
+  runCheck,
+  setupEducationList
 }){
 
   const filteredItemSchool = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
@@ -393,31 +442,31 @@ function EducationEditMenu({
   let schoolType = typeof isSchool;
   let degreeType = typeof isDegree;
 
-  // Run Validation function, based on validation also update the educationList using states
-  // 12/18/2023 - Last worked on function, setting degree in isEducation is working,
-  // isEducation is set when calling this (component) within (DropButton2)
+
   function handleListUpdate(){
 
     if(handleValidation() === true){
-
-      // setSchoolInput(true)
-      // setDegreeInput(true)
 
     }
 
     else{
 
-      educationList[sendKey].School = isSchool;
-      educationList[sendKey].title = isDegree;
-      educationList[sendKey].Degree = isDegree;
-      educationList[sendKey].StartDate = isStart;
-      educationList[sendKey].EndDate = isFinished;    
+      // ***  CURRENT ISSUE *** 
+      // *** State is not update correctly in resume page section upon change *** 
+
+      // educationList[sendKey].School = isSchool;
+      // educationList[sendKey].title = isDegree;
+      // educationList[sendKey].Degree = isDegree;
+      // educationList[sendKey].StartDate = isStart;
+      // educationList[sendKey].EndDate = isFinished;    
+
+      setSchool()
+
+      console.log(educationList);
 
       onShowEdit(); // turn off edit menu
       runCheck(); // allows clickability for adding new education
     }
-
-    
 
     console.log(educationList[sendKey]);
   }
@@ -854,10 +903,6 @@ function MainSection() {
 
   }
 
-  // set up function that cleans up 'un-set' items in both education and experience arrays
-  // runs setActiveIndex() specific to dropdown 1, 2, or 3
-  // function will run upon click of dropdown button
-
   function cleanupForDrop1(){
 
     console.log('run cleanup for Dropdown 1');
@@ -866,11 +911,15 @@ function MainSection() {
 
     checkItem();
 
-    // cleanup isEducationList, needs to sort the same every time
-    cleanEducationList();
+    if(activeEdClickable === false){
 
-    // cleanup isExperienceList
+      // cleanup isEducationList - *** Needs fix to enable same sorting everytime (1/8/2024) ***
+      cleanEducationList();
+      
+      
+      // cleanup isExperienceList 
 
+    }
   }
 
   function cleanupForDrop2(){
@@ -888,9 +937,25 @@ function MainSection() {
 
     setActiveIndex(2)
 
-    // cleanup isEducationList
+    checkItem();
 
+    if(activeEdClickable === false){
+
+      // cleanup isEducationList - *** Needs fix to enable same sorting everytime (1/8/2024) ***
+      cleanEducationList();
+      
+    }
   }
+
+  const listEducationInfo = activeEducation.map(item => 
+
+    <EducationNameElement 
+      item={item}
+      key={item.id}
+       
+    />
+    
+    );
 
 
     return <>
@@ -939,7 +1004,7 @@ function MainSection() {
         {/* React Component #3 */}
         <DropButton3 
           isActive={activeIndex === 2}
-          onShow={() => setActiveIndex(2)}        
+          onShow={cleanupForDrop3}        
         />
 
       </div>
@@ -987,8 +1052,16 @@ function MainSection() {
           <div className="bottomInfo">
             <div className="bottomSec1">
               <div className="edHeader">Education</div>
-              <div className="dateColumn1" />
-              <div className="infoColumn1" />
+              <div className="dateColumn1">
+
+
+
+              </div>
+              <div className="infoColumn1">
+
+                {listEducationInfo}
+
+              </div>
             </div>
             <div className="bottomSec2">
               <div className="prHeader">Professional Experience</div>
