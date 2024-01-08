@@ -142,29 +142,17 @@ function DropButton1({
 
 function DropButton2({
   isActive,
-  onShow
+  onShow,
+  isEducationList,
+  setEducationList
 }) {
 
-  // Create array that will be meant to hold Education objects
-  // values for object - (School, Degree, StartDate, EndDate, Location)
-  const educationList = [{
-    id: 0,
-    title: 'Item 1',
-    School: '',
-    Degree: 'Item 1',
-    StartDate: '',
-    EndDate: '',
-    Location: '',
-  }];
-  
   const [activeMenu, setActiveMenu] = useState(0); 
 
-  const [isClickable, setClickable] = useState(true);
+  const [isClickable, setClickable] = useState(true); //  lift up clickability and function ???
 
   const [isHighlighted, setHighlighted] = useState(false);
   const [isButtonHighlighted, setButtonHighlighted] = useState(false);
-  
-  const [isEducationList, setEducationList] = useState(educationList);
 
   const [isSelectedEducationId, setSelectedEducationId] = useState(0);
 
@@ -179,12 +167,12 @@ function DropButton2({
   const listItems = isEducationList.map(item => 
 
     <EducationElement 
-    item={item}
-    key={item.id}
-    isMenu={activeMenu === 1}
-    onShowEdit={() => 
-      setupEditMenu(item.id)
-    } 
+      item={item}
+      key={item.id}
+      isMenu={activeMenu === 1}
+      onShowEdit={() => 
+        setupEditMenu(item.id)
+      } 
     />
     
     );
@@ -235,7 +223,7 @@ function DropButton2({
 
     isEducationList.push(newItem); // sets new item to array
   
-    setEducationList(isEducationList); // set new item to state -> DOM 
+    setEducationList // set new item to state -> DOM 
     // setButtonHighlighted(false);
     
     checkItem(); // Determines '+' button clickability using isClickable
@@ -261,7 +249,14 @@ function DropButton2({
           src={dropIconDown} 
         />
         ) : (
-        <img onClick={onShow} className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
+        <img 
+          onClick={onShow} 
+          className="drop1" 
+          onMouseEnter={() => setHighlighted(true)} 
+          onMouseLeave={() => setHighlighted(false)} 
+          style={{ color: "none" }} 
+          src={dropIconDown} 
+        />
         )
         }
 
@@ -406,6 +401,7 @@ function EducationEditMenu({
   const [isCancelHovered, setCancelHovered] = useState(false); 
 
   const [isSchoolInput, setSchoolInput] = useState(false);
+  const [isDegreeInput, setDegreeInput] = useState(false);
 
   const [isSchool, setSchool] = useState(filteredItemSchool);
   const [isDegree, setDegree] = useState(filteredItemDegree);
@@ -413,24 +409,22 @@ function EducationEditMenu({
   const [isFinished, setFinished] = useState(filteredItemFinished);
   const [isLocation, setLocation] = useState(filteredItemLocation);
 
-
+  let schoolType = typeof isSchool;
+  let degreeType = typeof isDegree;
 
   // Run Validation function, based on validation also update the educationList using states
   // 12/18/2023 - Last worked on function, setting degree in isEducation is working,
   // isEducation is set when calling this (component) within (DropButton2)
   function handleListUpdate(){
 
-    console.log(isSchool.length);
-
     if(handleValidation() === true){
 
-      setSchoolInput(true)
+      // setSchoolInput(true)
+      // setDegreeInput(true)
 
     }
 
     else{
-
-      setSchoolInput(false)
 
       educationList[sendKey].School = isSchool;
       educationList[sendKey].title = isDegree;
@@ -438,8 +432,8 @@ function EducationEditMenu({
       educationList[sendKey].StartDate = isStart;
       educationList[sendKey].EndDate = isFinished;    
 
-      onShowEdit();
-      // runCheck();
+      onShowEdit(); // turn off edit menu
+      runCheck(); // allows clickability for adding new education
     }
 
     
@@ -449,11 +443,93 @@ function EducationEditMenu({
 
   function handleValidation(){
 
-    if((isSchool.length > 0) && (isDegree.length > 0)){
+    let schoolValidation = false
+    let degreeValidation = false
+
+    // if school is string
+    if(schoolType === 'string'){
+
+      console.log('isSchool is string')
+
+      if(isSchool.length > 0){
+
+        schoolValidation = true
+        setSchoolInput(false)
+
+      }
+      else{
+
+        schoolValidation = false
+        setSchoolInput(true)
+
+      }
+
+    }
+
+    // else school is object
+    else{
+
+      console.log('isSchool is object')
+      
+      if(isSchool[0].length > 0){
+
+        schoolValidation = true
+        setSchoolInput(false)
+      }
+      else{
+
+        schoolValidation = false
+        setSchoolInput(true)
+        
+
+      }
+
+    }
+
+    // if degree is string
+    if(degreeType === 'string'){
+
+      console.log('isDegree is string')
+      if(isDegree.length > 0){
+
+        degreeValidation = true
+        setDegreeInput(false)
+      }
+      else{
+
+        degreeValidation = false
+        setDegreeInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      console.log('isDegree is object')
+      if(isDegree[0].length > 0){
+
+        degreeValidation = true
+        setDegreeInput(false)
+      }
+      else{
+
+        degreeValidation = false
+        setDegreeInput(true)
+
+      }      
+
+    }
+
+
+    // Complete check for returning false or true to handleListUpdate()
+    if((schoolValidation && degreeValidation) === true){
 
       return false
 
     }
+
     else{
 
       return true
@@ -461,13 +537,13 @@ function EducationEditMenu({
     }
 
 
+
   }
 
 
   function handleSchoolChange (a){
-  
+    
     setSchool(a.target.value);
-
   }
 
   function handleDegreeChange (e){
@@ -506,6 +582,11 @@ function EducationEditMenu({
 
   }
 
+  const degreeInputStylings = {
+    border: isDegreeInput ? '1px solid red' : '1px solid black'
+
+  }
+
   return(
     <>
       <div className='formEducation'>
@@ -526,6 +607,7 @@ function EducationEditMenu({
           className='degreeInput' 
           type='text'
           value={isDegree}
+          style={degreeInputStylings}
         >
           </input>
 
@@ -700,10 +782,17 @@ function MainSection() {
   const [activePhone, setActivePhone] = useState('');
   const [activeAddress, setActiveAddress] = useState('');
 
-
+  
 
   let buttonNames = ['Personal', 'Education', 'Experience'];
   
+  // Create array that will be meant to hold Education objects
+  // values for object - (School, Degree, StartDate, EndDate, Location)
+  const educationList = [];
+
+  const [activeEducation, setActiveEducation] = useState(educationList);
+
+
   function handleNameChange (e){
     setActiveName(e.target.value);
   }
@@ -719,6 +808,65 @@ function MainSection() {
   function handleAddressChange (e){
     setActiveAddress(e.target.value);
   }  
+
+  function cleanEducationList(){
+
+    let counter = educationList.length - 1;
+
+    if(educationList.length > 0){
+
+      while(counter > -1){
+
+        if(educationList[counter].Degree === ''){
+
+          educationList.pop;
+
+        }
+
+        counter--;
+      }
+
+    }
+
+    setActiveEducation(educationList)
+  }
+
+  function cleanExperienceList(){
+
+
+  }
+
+  // set up function that cleans up 'un-set' items in both education and experience arrays
+  // runs setActiveIndex() specific to dropdown 1, 2, or 3
+  // function will run upon click of dropdown button
+
+  function cleanupForDrop1(){
+
+    setActiveIndex(0);
+
+    // cleanup isEducationList
+    cleanEducationList();
+
+    // cleanup isExperienceList
+
+  }
+
+  function cleanupForDrop2(){
+
+    setActiveIndex(1)
+
+    // cleanup isExperienceList
+
+  }
+
+  function cleanupForDrop3(){
+
+    setActiveIndex(2)
+
+    // cleanup isEducationList
+
+  }
+
 
     return <>
     <div className="sideBar">
@@ -746,7 +894,7 @@ function MainSection() {
           changePhone={handlePhoneChange}
           changeAddress={handleAddressChange}
           isActive={activeIndex === 0}
-          onShow={() => setActiveIndex(0)}
+          onShow={cleanupForDrop1}
           isName={activeName}
           isEmail={activeEmail}
           isPhone={activePhone}
@@ -757,6 +905,8 @@ function MainSection() {
         <DropButton2 
           isActive={activeIndex === 1}
           onShow={() => setActiveIndex(1)} 
+          isEducationList={activeEducation}
+          setEducationList={() => setActiveEducation(activeEducation)}
         />
 
         {/* React Component #3 */}
