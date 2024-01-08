@@ -144,12 +144,14 @@ function DropButton2({
   isActive,
   onShow,
   isEducationList,
-  setEducationList
+  setEducationList,
+  isClickable,
+  checkClickable
 }) {
 
   const [activeMenu, setActiveMenu] = useState(0); 
 
-  const [isClickable, setClickable] = useState(true); //  lift up clickability and function ???
+  // const [isClickable, setClickable] = useState(true); //  lift up clickability and function ???
 
   const [isHighlighted, setHighlighted] = useState(false);
   const [isButtonHighlighted, setButtonHighlighted] = useState(false);
@@ -186,27 +188,6 @@ function DropButton2({
       
   }  
 
-  {/* Check educationList last element to see if School property is not equal to ('') */}
-  function checkItem(){
-
-    console.log('Runs checkItem');
-    
-    let lastItem = isEducationList.length - 1;
-
-    console.log(isEducationList[lastItem].School);
-
-    if((isEducationList[lastItem].School) === ''){
-
-      setClickable(false);
-
-    }
-    else {
-
-      setClickable(true);
-
-    }
-
-  }
 
   function addItem(){
     console.log('Runs addItem');
@@ -226,7 +207,7 @@ function DropButton2({
     setEducationList // set new item to state -> DOM 
     // setButtonHighlighted(false);
     
-    checkItem(); // Determines '+' button clickability using isClickable
+    checkClickable(); // Determines '+' button clickability using isClickable
 
 
   }
@@ -314,7 +295,7 @@ function DropButton2({
             
           }
           educationList={isEducationList}
-          runCheck ={() => checkItem()}
+          runCheck ={() => checkClickable()}
         /> 
       
       ) : (
@@ -791,7 +772,7 @@ function MainSection() {
   const educationList = [];
 
   const [activeEducation, setActiveEducation] = useState(educationList);
-
+  const [activeEdClickable, setEdClickable] = useState(true);
 
   function handleNameChange (e){
     setActiveName(e.target.value);
@@ -809,17 +790,54 @@ function MainSection() {
     setActiveAddress(e.target.value);
   }  
 
+
+  {/* Check educationList last element to see if School property is not equal to ('') */}
+  function checkItem(){
+
+    console.log('Runs checkItem');
+    
+    let lastItem = activeEducation.length - 1;
+
+    // console.log(typeof activeEducation[lastItem].School);
+
+    if(activeEducation.length > 0){
+
+      if((activeEducation[lastItem].School) === ''){
+
+        setEdClickable(false);
+
+      }
+      else {
+
+        setEdClickable(true);
+
+      }
+    }
+    else{
+
+      setEdClickable(true);
+
+    }
+
+  }
+
   function cleanEducationList(){
 
-    let counter = educationList.length - 1;
+    let newArray = []
 
-    if(educationList.length > 0){
+    // console.log(activeEducation)
+
+    let counter = activeEducation.length - 1;
+
+    if(activeEducation.length > 0){
 
       while(counter > -1){
 
-        if(educationList[counter].Degree === ''){
+        if(activeEducation[counter].Degree != ''){
 
-          educationList.pop;
+          
+          newArray.push(activeEducation[counter])
+          console.log(newArray);
 
         }
 
@@ -828,7 +846,7 @@ function MainSection() {
 
     }
 
-    setActiveEducation(educationList)
+    setActiveEducation(newArray)
   }
 
   function cleanExperienceList(){
@@ -842,9 +860,13 @@ function MainSection() {
 
   function cleanupForDrop1(){
 
+    console.log('run cleanup for Dropdown 1');
+
     setActiveIndex(0);
 
-    // cleanup isEducationList
+    checkItem();
+
+    // cleanup isEducationList, needs to sort the same every time
     cleanEducationList();
 
     // cleanup isExperienceList
@@ -854,6 +876,9 @@ function MainSection() {
   function cleanupForDrop2(){
 
     setActiveIndex(1)
+
+    checkItem();
+
 
     // cleanup isExperienceList
 
@@ -904,9 +929,11 @@ function MainSection() {
         {/* React Component #2 */}
         <DropButton2 
           isActive={activeIndex === 1}
-          onShow={() => setActiveIndex(1)} 
+          onShow={cleanupForDrop2} 
           isEducationList={activeEducation}
           setEducationList={() => setActiveEducation(activeEducation)}
+          isClickable={activeEdClickable}
+          checkClickable={() => checkItem()}
         />
 
         {/* React Component #3 */}
