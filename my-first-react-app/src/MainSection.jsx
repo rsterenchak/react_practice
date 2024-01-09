@@ -21,14 +21,6 @@ import locationIcon from './assets/location.svg'
 import { personalDetails } from './personalDetails.js';
 
 
-/* 
-    const personal = {
-      name: '',
-      email:  '',
-      phone:  '',
-      address:  ''
-    }; */
-
 // create components for drop1, drop2, drop3
 function DropButton1({
   isActive,
@@ -51,17 +43,6 @@ function DropButton1({
     // const [isEmail, setEmail] = useState(''); // lift Up to mainSection
     // const [isPhone, setPhone] = useState(''); // lift Up to mainSection
     // const [isAddress, setAddress] = useState(''); // lift Up to mainSection
-
-    
-
-/*     const setNameValue = (event) => {
-      if (event.key == "Enter"){
-        personal.name = event.target.value;
-        console.log(personal.name);
-      }
-    } */
-    // Create personal object
-    // const currentPersonal = personalDetails(nam, emai, phon, add);
 
 
 
@@ -210,7 +191,6 @@ function DropButton2({
 
   }
 
- // ***** Next -> Create component for edit menu section *****
 
   return (
     <div className="dropDown2">
@@ -293,7 +273,7 @@ function DropButton2({
             
           }
           educationList={isEducationList}
-          setupEducationList={() => setEducationList()}
+          setupEducationList={setEducationList}
           runCheck ={() => checkClickable()}
         /> 
       
@@ -350,7 +330,8 @@ return(
 
 {/** Currently working on elements to be added to middle section when array is populated */}
 function EducationNameElement({
-  item
+  item,
+  activeEducation
 }) {
 
   const myStyle = {
@@ -451,24 +432,23 @@ function EducationEditMenu({
 
     else{
 
-      // ***  CURRENT ISSUE *** 
-      // *** State is not update correctly in resume page section upon change *** 
+      educationList[sendKey].School = isSchool;
+      educationList[sendKey].title = isDegree;
+      educationList[sendKey].Degree = isDegree;
+      educationList[sendKey].StartDate = isStart;
+      educationList[sendKey].EndDate = isFinished;    
+ 
+      console.log(educationList[sendKey]);
 
-      // educationList[sendKey].School = isSchool;
-      // educationList[sendKey].title = isDegree;
-      // educationList[sendKey].Degree = isDegree;
-      // educationList[sendKey].StartDate = isStart;
-      // educationList[sendKey].EndDate = isFinished;    
 
-      setSchool()
-
-      console.log(educationList);
+      // console.log(educationList);
 
       onShowEdit(); // turn off edit menu
+
       runCheck(); // allows clickability for adding new education
     }
 
-    console.log(educationList[sendKey]);
+    // console.log(educationList[sendKey]);
   }
 
   function handleValidation(){
@@ -812,16 +792,28 @@ function MainSection() {
   const [activePhone, setActivePhone] = useState('');
   const [activeAddress, setActiveAddress] = useState('');
 
-  
 
   let buttonNames = ['Personal', 'Education', 'Experience'];
   
+
   // Create array that will be meant to hold Education objects
   // values for object - (School, Degree, StartDate, EndDate, Location)
   const educationList = [];
 
   const [activeEducation, setActiveEducation] = useState(educationList);
   const [activeEdClickable, setEdClickable] = useState(true);
+
+  // mapped array within Main -> EducationNameElement -> 
+  let listEducationInfo = activeEducation.map(item => 
+
+    <EducationNameElement 
+      item={item}
+      key={item.id}
+      activeEducation
+    />
+    );
+
+
 
   function handleNameChange (e){
     setActiveName(e.target.value);
@@ -947,15 +939,9 @@ function MainSection() {
     }
   }
 
-  const listEducationInfo = activeEducation.map(item => 
 
-    <EducationNameElement 
-      item={item}
-      key={item.id}
-       
-    />
-    
-    );
+
+    // make function to be passed to DropButton2 -> EducationEditMenu -> tie to Submit button click
 
 
     return <>
@@ -1078,3 +1064,14 @@ function MainSection() {
   }
 
   export default MainSection;
+
+
+
+  // ***  CURRENT ISSUE (mutating state) 1/8/2024 *** 
+  // *** State is not update correctly in resume page section upon change ***
+  // DropButton2 - EducationEditMenu - EducationNameElement
+
+  // instead of mutating, store variables into stand alone object then set to the educationList
+
+  // What to try Next?
+  // - Try completely re-creating how the component works, copy, comment out and start from scratch
