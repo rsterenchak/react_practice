@@ -331,6 +331,15 @@ ul {
   background-color: lightgreen;
 }
 
+.formEducationDelete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 27px;
+  width: 72px;
+  border-radius: 5px;
+  background-color: #f97566;
+}
 
 
 .formSchool {
