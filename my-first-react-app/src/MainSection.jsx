@@ -128,8 +128,11 @@ function DropButton2({
   setEducationList,
   isClickable,
   checkClickable,
-  isEdSwitch
+  isEdSwitch,
+  updateEdList
 }) {
+
+
 
   const [activeMenu, setActiveMenu] = useState(0); 
 
@@ -137,6 +140,8 @@ function DropButton2({
   const [isButtonHighlighted, setButtonHighlighted] = useState(false);
 
   const [isSelectedEducationId, setSelectedEducationId] = useState(0);
+
+  const [currentList, setList] = useState(isEducationList);
 
   function setupEditMenu(itemKey){
 
@@ -146,7 +151,7 @@ function DropButton2({
 
   }
 
-  const listItems = isEducationList.map(item => 
+  const listItems = currentList.map(item => 
 
     <EducationElement 
       item={item}
@@ -170,12 +175,12 @@ function DropButton2({
 
 
   function addItem(){
-    console.log('Runs addItem');
+    console.log('Runs dropdown2 -> addItem');
 
-    let newEducationList = isEducationList;
+    let newEducationList = currentList;
 
     let newItem = {
-      id: isEducationList.length,
+      id: Math.random(),
       title: 'Item ' + (isEducationList.length + 1),
       School: '',
       Degree: '',
@@ -192,6 +197,7 @@ function DropButton2({
     
     checkClickable(); // Determines '+' button clickability using isClickable
 
+    console.log(currentList);
 
   }
 
@@ -275,10 +281,11 @@ function DropButton2({
           onShowEdit={() => 
             setActiveMenu(0)
           }
-          educationList={isEducationList}
-          setupEducationList={setEducationList}
+          educationList={currentList}
+          setupEducationList={setList}
           runCheck ={() => checkClickable()}
           setEdOn={isEdSwitch}
+          updateMainState={updateEdList}
         /> 
       
       ) : (
@@ -409,8 +416,10 @@ function EducationEditMenu({
   educationList, // activeEducation -> isEducationList -> educationList
   runCheck,
   setupEducationList,
-  setEdOn
+  setEdOn,
+  updateMainState
 }){
+
 
   const filteredItemSchool = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
     filteredEducation.School
@@ -432,6 +441,9 @@ function EducationEditMenu({
     filteredEducation.Location
   );  
 
+  const newEducationList = educationList.filter((education) => education.id !== sendKey); // list without element you are working with
+
+  const newEducationListAdded = educationList.filter((education) => education.id === sendKey);
 
   const [isSubmitHovered, setSubmitHovered] = useState(false);
   const [isCancelHovered, setCancelHovered] = useState(false); 
@@ -446,6 +458,8 @@ function EducationEditMenu({
   const [isFinished, setFinished] = useState(filteredItemFinished);
   const [isLocation, setLocation] = useState(filteredItemLocation);
 
+  
+
   let schoolType = typeof isSchool;
   let degreeType = typeof isDegree;
 
@@ -458,13 +472,16 @@ function EducationEditMenu({
 
     else{
 
-      educationList[sendKey].School = isSchool;
-      educationList[sendKey].title = isDegree;
-      educationList[sendKey].Degree = isDegree;
-      educationList[sendKey].StartDate = isStart;
-      educationList[sendKey].EndDate = isFinished;    
+      console.log(educationList);
+      console.log(sendKey);
+
+      newEducationListAdded[0].School = isSchool;
+      newEducationListAdded[0].title = isDegree;
+      newEducationListAdded[0].Degree = isDegree;
+      newEducationListAdded[0].StartDate = isStart;
+      newEducationListAdded[0].EndDate = isFinished;    
  
-      console.log(educationList[sendKey]);
+      newEducationList.push(newEducationListAdded);
 
 
       // console.log(educationList);
@@ -587,9 +604,22 @@ function EducationEditMenu({
 
   function handleDelete(){
     
-    onShowEdit();
-    setEdOn(true);
+    console.log('Runs handleDelete');
 
+    onShowEdit(); // turn off edit menu
+
+    runCheck(); // allows clickability for adding new education
+
+    setEdOn(true); // turns Education section information back on
+
+
+    educationList = newEducationList;
+
+    setupEducationList(educationList);
+
+    updateMainState(educationList); // create passFunction that runs function that updates state for two componenets up
+
+    
   }
 
 
@@ -864,8 +894,10 @@ function MainSection() {
 
   const [activeEdSection, setActiveEdSection] = useState(true); // responsible for turning off/on Education Info
 
+  const [activeEdList, setEdList] = useState(activeEducation);
+
   // mapped array within Main -> EducationNameElement -> 
-  let listEducationInfo = activeEducation.map(item => 
+  let listEducationInfo = activeEdList.map(item => 
 
     <EducationNameElement 
       item={item}
@@ -1044,10 +1076,11 @@ function MainSection() {
           isActive={activeIndex === 1}
           onShow={cleanupForDrop2} 
           isEducationList={activeEducation}
-          setEducationList={() => setActiveEducation(activeEducation)}
+          setEducationList={setActiveEducation}
           isClickable={activeEdClickable}
           checkClickable={() => checkItem()}
           isEdSwitch={setActiveEdSection}
+          updateEdList={setEdList}
 
         />
 
