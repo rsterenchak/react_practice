@@ -1169,8 +1169,8 @@ export default MainSection;
 //   function needs to turn off/on EducationNameElement, 
 //   turn off when edit menu is on and turn on when edit menu is off
 //
-// 
-//
+// - Just added ability to assign unique IDs for education elements, fine tune 
+//   Make sure there are no bugs in functionality. using Math.random()
 //
    
 
