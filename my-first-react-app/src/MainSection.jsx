@@ -148,6 +148,8 @@ function DropButton2({
     setActiveMenu(1)
     setSelectedEducationId(itemKey);
     isEdSwitch(false)
+    
+    // setList(isEducationList) // works in getting rid of element!!
 
   }
 
@@ -201,6 +203,12 @@ function DropButton2({
 
   }
 
+  // shows items and updates state within component itself (currentList)
+  function cleanItems(){
+    onShow()
+    setList(isEducationList)
+  }
+
 
   return (
     <div className="dropDown2">
@@ -210,7 +218,7 @@ function DropButton2({
 
         {isHighlighted ? ( 
         <img 
-          onClick={onShow}
+          onClick={cleanItems}
           className="drop1" 
           onMouseEnter={() => setHighlighted(true)} 
           onMouseLeave={() => setHighlighted(false)} 
@@ -219,7 +227,7 @@ function DropButton2({
         />
         ) : (
         <img 
-          onClick={onShow} 
+          onClick={cleanItems} 
           className="drop1" 
           onMouseEnter={() => setHighlighted(true)} 
           onMouseLeave={() => setHighlighted(false)} 
@@ -384,7 +392,9 @@ return(
 }
 
 function EducationDateElement({
-  item
+  item,
+  activeEducation,
+  isEdSection
 }) {
 
   const myStyle = {
@@ -394,13 +404,29 @@ function EducationDateElement({
 return(
 
   <div 
-    className='educationDate' 
+    className='educationName' 
     style={myStyle}
   >
 
-    {item.StartDate}
-    {item.EndDate}
+  {isEdSection ? (
 
+    <>
+
+    <div className='educationStart'>{item.StartDate}</div>
+    <div className='educationEnd'>{item.EndDate}</div>
+
+    </>
+
+  ) : (
+
+    <>
+
+    <div className='educationStart'>{item.StartDate}</div>
+    <div className='educationEnd'>{item.EndDate}</div>
+
+    </>
+
+  )}
 
   </div>
 
@@ -451,6 +477,9 @@ function EducationEditMenu({
 
   const [isSchoolInput, setSchoolInput] = useState(false);
   const [isDegreeInput, setDegreeInput] = useState(false);
+  const [isStartInput, setStartInput] = useState(false);
+  const [isEndInput, setEndInput] = useState(false);
+
 
   const [isSchool, setSchool] = useState(filteredItemSchool);
   const [isDegree, setDegree] = useState(filteredItemDegree);
@@ -463,6 +492,8 @@ function EducationEditMenu({
   let schoolType = typeof isSchool;
   let degreeType = typeof isDegree;
 
+  let startType = typeof isStart;
+  let endType = typeof isFinished;  
 
   function handleListUpdate(){
 
@@ -500,6 +531,13 @@ function EducationEditMenu({
 
     let schoolValidation = false
     let degreeValidation = false
+    let startValidation = false
+    let endValidation = false
+
+    console.log(isSchool);
+    console.log(isDegree);
+    console.log(isStart);
+    console.log(isFinished);
 
     // if school is string
     if(schoolType === 'string'){
@@ -577,9 +615,81 @@ function EducationEditMenu({
 
     }
 
+    // if start is string
+    if(startType === 'string'){
+
+      console.log('isStart is string')
+      if(isStart.length > 0){
+
+        startValidation = true
+        setStartInput(false)
+      }
+      else{
+
+        startValidation = false
+        setStartInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      console.log('isStart is object')
+      if(isStart[0].length > 0){
+
+        startValidation = true
+        setStartInput(false)
+      }
+      else{
+
+        startValidation = false
+        setStartInput(true)
+
+      }      
+
+    }
+
+    // if start is string
+    if(endType === 'string'){
+
+      console.log('isFinished is string')
+      if(isFinished.length > 0){
+
+        endValidation = true
+        setEndInput(false)
+      }
+      else{
+
+        endValidation = false
+        setEndInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      console.log('isFinished is object')
+      if(isFinished[0].length > 0){
+
+        endValidation = true
+        setEndInput(false)
+      }
+      else{
+
+        endValidation = false
+        setEndInput(true)
+
+      }      
+
+    }
+
 
     // Complete check for returning false or true to handleListUpdate()
-    if((schoolValidation && degreeValidation) === true){
+    if((schoolValidation && degreeValidation && startValidation && endValidation) === true){
 
       return false
 
@@ -676,6 +786,16 @@ function EducationEditMenu({
 
   }
 
+  const startInputStylings = {
+    border: isStartInput ? '1px solid red' : '1px solid black'
+
+  }  
+
+  const endInputStylings = {
+    border: isEndInput ? '1px solid red' : '1px solid black'
+
+  }  
+
   return(
     <>
       <div className='formEducation'>
@@ -706,6 +826,7 @@ function EducationEditMenu({
           className='startDateInput' 
           type='date'
           value={isStart}
+          style={startInputStylings}
         >
         </input>
 
@@ -715,6 +836,7 @@ function EducationEditMenu({
           className='endDateInput' 
           type='date'
           value={isFinished}
+          style={endInputStylings}
         >
         </input>
 
@@ -907,6 +1029,16 @@ function MainSection() {
     />
     );
 
+  // mapped array within Main -> EducationNameElement -> 
+  let listEducationDates = activeEdList.map(item => 
+
+    <EducationDateElement 
+      item={item}
+      key={item.id}
+      isEdSection={activeEdSection}
+      activeEducation
+    />
+    );    
 
 
   function handleNameChange (e){
@@ -960,8 +1092,6 @@ function MainSection() {
 
     let newArray = []
 
-    // console.log(activeEducation)
-
     let counter = activeEducation.length - 1;
 
     if(activeEducation.length > 0){
@@ -981,7 +1111,14 @@ function MainSection() {
 
     }
 
+
+    console.log(newArray); //  showing updated array without element
     setActiveEducation(newArray)
+    setEdList(newArray) 
+    
+    console.log(activeEdList); // showing old array with element
+    // console.log(activeEdList);
+
   }
 
   function cleanExperienceList(){
@@ -1002,7 +1139,7 @@ function MainSection() {
       // cleanup isEducationList - *** Needs fix to enable same sorting everytime (1/8/2024) ***
       cleanEducationList();
       
-      
+      // console.log(activeEdList);
       // cleanup isExperienceList 
 
     }
@@ -1075,7 +1212,7 @@ function MainSection() {
         <DropButton2 
           isActive={activeIndex === 1}
           onShow={cleanupForDrop2} 
-          isEducationList={activeEducation}
+          isEducationList={activeEdList} // before edit: activeEducation
           setEducationList={setActiveEducation}
           isClickable={activeEdClickable}
           checkClickable={() => checkItem()}
@@ -1137,7 +1274,7 @@ function MainSection() {
               <div className="edHeader">Education</div>
               <div className="dateColumn1">
 
-
+                {listEducationDates}
 
               </div>
               <div className="infoColumn1">

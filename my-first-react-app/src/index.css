@@ -769,8 +769,11 @@ ul {
 }
 
 .dateColumn1 {
-  display: grid;
-  grid-area: dateColumn1;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+
+  gap: 10px;
   margin: 10px;
   border: 1px solid lightgrey;
 }
@@ -801,6 +804,14 @@ ul {
 }
 
 .educationDegree {}
+
+.educationStart {
+  font-weight: bold;
+}
+
+.educationEnd {
+  font-weight: bold;
+}
 
 .bottomSec2 {
   display: grid;
