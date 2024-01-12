@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './index.css'
 
 function MobileExtension() {
-  console.log('entered mobileExtension component')
+  // console.log('entered mobileExtension component')
   return (
       <div id='footSection'>
 

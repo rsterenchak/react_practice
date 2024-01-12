@@ -805,12 +805,21 @@ ul {
 
 .educationDegree {}
 
+.educationDate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  grid-area: educationName;
+  border: 1px solid lightgrey;
+}
+
 .educationStart {
   font-weight: bold;
 }
 
 .educationEnd {
-  font-weight: bold;
+  
 }
 
 .bottomSec2 {

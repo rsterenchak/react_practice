@@ -143,6 +143,21 @@ function DropButton2({
 
   const [currentList, setList] = useState(isEducationList);
 
+/*   function handleUpdate(){
+    listItems = currentList.map(item => 
+
+      <EducationElement 
+        item={item}
+        key={item.id}
+        isMenu={activeMenu === 1}
+        onShowEdit={() => 
+          setupEditMenu(item.id)
+        } 
+      />
+      
+      );
+  } */
+
   function setupEditMenu(itemKey){
 
     setActiveMenu(1)
@@ -153,7 +168,7 @@ function DropButton2({
 
   }
 
-  const listItems = currentList.map(item => 
+  let listItems = currentList.map(item => 
 
     <EducationElement 
       item={item}
@@ -199,7 +214,7 @@ function DropButton2({
     
     checkClickable(); // Determines '+' button clickability using isClickable
 
-    console.log(currentList);
+    // console.log(currentList);
 
   }
 
@@ -207,8 +222,28 @@ function DropButton2({
   function cleanItems(){
     onShow()
     setList(isEducationList)
+    checkClickable()
   }
 
+  function cleanAfterDelete(item){
+    
+    console.log('clean after delete');
+    // console.log(item);
+    // console.log(isEducationList);
+    
+    if(item === undefined){
+
+      setList(isEducationList)
+
+    }
+    else{
+
+      setList(item)
+    
+    }
+
+    checkClickable(item)
+  }
 
   return (
     <div className="dropDown2">
@@ -291,9 +326,9 @@ function DropButton2({
           }
           educationList={currentList}
           setupEducationList={setList}
-          runCheck ={() => checkClickable()}
+          runCheck ={(item) => cleanAfterDelete(item)}
           setEdOn={isEdSwitch}
-          updateMainState={updateEdList}
+          updateMainState={updateEdList} // tied to dropDownButton 2 list
         /> 
       
       ) : (
@@ -404,7 +439,7 @@ function EducationDateElement({
 return(
 
   <div 
-    className='educationName' 
+    className='educationDate' 
     style={myStyle}
   >
 
@@ -412,8 +447,8 @@ return(
 
     <>
 
-    <div className='educationStart'>{item.StartDate}</div>
-    <div className='educationEnd'>{item.EndDate}</div>
+      <div className='educationStart'>{item.StartDate} - {item.EndDate}</div>
+      <div className='educationEnd'>{item.Location}</div>
 
     </>
 
@@ -421,8 +456,8 @@ return(
 
     <>
 
-    <div className='educationStart'>{item.StartDate}</div>
-    <div className='educationEnd'>{item.EndDate}</div>
+      <div className='educationStart'>{item.StartDate} - {item.EndDate}</div>
+      <div className='educationEnd'>{item.Location}</div>
 
     </>
 
@@ -441,7 +476,7 @@ function EducationEditMenu({
   sendKey,
   educationList, // activeEducation -> isEducationList -> educationList
   runCheck,
-  setupEducationList,
+  setupEducationList, // setList -> setupEducationList
   setEdOn,
   updateMainState
 }){
@@ -479,7 +514,7 @@ function EducationEditMenu({
   const [isDegreeInput, setDegreeInput] = useState(false);
   const [isStartInput, setStartInput] = useState(false);
   const [isEndInput, setEndInput] = useState(false);
-
+  const [isLocationInput, setLocationInput] = useState(false);
 
   const [isSchool, setSchool] = useState(filteredItemSchool);
   const [isDegree, setDegree] = useState(filteredItemDegree);
@@ -495,6 +530,8 @@ function EducationEditMenu({
   let startType = typeof isStart;
   let endType = typeof isFinished;  
 
+  let locationType = typeof isLocation;
+
   function handleListUpdate(){
 
     if(handleValidation() === true){
@@ -503,14 +540,15 @@ function EducationEditMenu({
 
     else{
 
-      console.log(educationList);
-      console.log(sendKey);
+      // console.log(educationList);
+      // console.log(sendKey);
 
       newEducationListAdded[0].School = isSchool;
       newEducationListAdded[0].title = isDegree;
       newEducationListAdded[0].Degree = isDegree;
       newEducationListAdded[0].StartDate = isStart;
-      newEducationListAdded[0].EndDate = isFinished;    
+      newEducationListAdded[0].EndDate = isFinished;
+      newEducationListAdded[0].Location = isLocation;    
  
       newEducationList.push(newEducationListAdded);
 
@@ -533,16 +571,18 @@ function EducationEditMenu({
     let degreeValidation = false
     let startValidation = false
     let endValidation = false
+    let locationValidation = false
 
-    console.log(isSchool);
+/*     console.log(isSchool);
     console.log(isDegree);
     console.log(isStart);
     console.log(isFinished);
+    console.log(isLocation); */
 
     // if school is string
     if(schoolType === 'string'){
 
-      console.log('isSchool is string')
+      // console.log('isSchool is string')
 
       if(isSchool.length > 0){
 
@@ -562,7 +602,7 @@ function EducationEditMenu({
     // else school is object
     else{
 
-      console.log('isSchool is object')
+      // console.log('isSchool is object')
       
       if(isSchool[0].length > 0){
 
@@ -582,7 +622,8 @@ function EducationEditMenu({
     // if degree is string
     if(degreeType === 'string'){
 
-      console.log('isDegree is string')
+      // console.log('isDegree is string')
+      
       if(isDegree.length > 0){
 
         degreeValidation = true
@@ -600,7 +641,7 @@ function EducationEditMenu({
     // else degree is object
     else{
 
-      console.log('isDegree is object')
+      // console.log('isDegree is object')
       if(isDegree[0].length > 0){
 
         degreeValidation = true
@@ -618,7 +659,7 @@ function EducationEditMenu({
     // if start is string
     if(startType === 'string'){
 
-      console.log('isStart is string')
+      // console.log('isStart is string')
       if(isStart.length > 0){
 
         startValidation = true
@@ -636,7 +677,7 @@ function EducationEditMenu({
     // else degree is object
     else{
 
-      console.log('isStart is object')
+      // console.log('isStart is object')
       if(isStart[0].length > 0){
 
         startValidation = true
@@ -654,7 +695,7 @@ function EducationEditMenu({
     // if start is string
     if(endType === 'string'){
 
-      console.log('isFinished is string')
+      // console.log('isFinished is string')
       if(isFinished.length > 0){
 
         endValidation = true
@@ -672,7 +713,7 @@ function EducationEditMenu({
     // else degree is object
     else{
 
-      console.log('isFinished is object')
+      // console.log('isFinished is object')
       if(isFinished[0].length > 0){
 
         endValidation = true
@@ -687,9 +728,46 @@ function EducationEditMenu({
 
     }
 
+    // if start is string
+    if(locationType === 'string'){
+
+      // console.log('isLocation is string')
+      if(isLocation.length > 0){
+
+        locationValidation = true
+        setLocationInput(false)
+      }
+      else{
+
+        locationValidation = false
+        setLocationInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      // console.log('isLocation is object')
+      if(isLocation[0].length > 0){
+
+        locationValidation = true
+        setLocationInput(false)
+      }
+      else{
+
+        locationValidation = false
+        setLocationInput(true)
+
+      }      
+
+    }    
+
+
 
     // Complete check for returning false or true to handleListUpdate()
-    if((schoolValidation && degreeValidation && startValidation && endValidation) === true){
+    if((schoolValidation && degreeValidation && startValidation && endValidation && locationValidation) === true){
 
       return false
 
@@ -708,28 +786,34 @@ function EducationEditMenu({
   function handleCancel(){
 
     onShowEdit();
+    runCheck(); // allows clickability for adding new education
     setEdOn(true);
 
   }
 
   function handleDelete(){
     
-    console.log('Runs handleDelete');
-
-    onShowEdit(); // turn off edit menu
-
-    runCheck(); // allows clickability for adding new education
-
-    setEdOn(true); // turns Education section information back on
+    console.log('Runs handleDelete - showing updated array');
 
 
     educationList = newEducationList;
 
-    setupEducationList(educationList);
+    const newList = educationList;
 
-    updateMainState(educationList); // create passFunction that runs function that updates state for two componenets up
-
+    // updateMainState(educationList); // create passFunction that runs function that updates state for two componenets up
     
+    
+
+    setupEducationList(newList);
+    updateMainState(newList);
+
+    onShowEdit(); // turn off edit menu
+
+    runCheck(newList); // allows clickability for adding new education
+    
+    setEdOn(true); // turns Education section information back on      
+
+    console.log(newList); // ** shows updated array **
   }
 
 
@@ -796,6 +880,10 @@ function EducationEditMenu({
 
   }  
 
+  const locationInputStylings ={
+    border: isLocationInput ? '1px solid red' : '1px solid black'
+  }
+
   return(
     <>
       <div className='formEducation'>
@@ -846,6 +934,7 @@ function EducationEditMenu({
           className='locationInput' 
           type='text'
           value={isLocation}
+          style={locationInputStylings}
         >
         </input>
       </div>
@@ -1009,7 +1098,7 @@ function MainSection() {
 
   // Create array that will be meant to hold Education objects
   // values for object - (School, Degree, StartDate, EndDate, Location)
-  const educationList = [];
+  let educationList = [];
 
   const [activeEducation, setActiveEducation] = useState(educationList);
   const [activeEdClickable, setEdClickable] = useState(true);
@@ -1059,17 +1148,22 @@ function MainSection() {
 
 
   {/* Check educationList last element to see if School property is not equal to ('') */}
-  function checkItem(){
+  function checkItem(item){
 
     console.log('Runs checkItem');
+    console.log(item);
     
-    let lastItem = activeEducation.length - 1;
+    console.log(activeEdList);
+    console.log(activeEducation);
 
-    // console.log(typeof activeEducation[lastItem].School);
+    educationList = item
+    
+    
+    let lastItem = activeEdList.length - 1;
 
-    if(activeEducation.length > 0){
+    if(activeEdList.length > 0){
 
-      if((activeEducation[lastItem].School) === ''){
+      if((activeEdList[lastItem].School) === ''){
 
         setEdClickable(false);
 
@@ -1215,7 +1309,7 @@ function MainSection() {
           isEducationList={activeEdList} // before edit: activeEducation
           setEducationList={setActiveEducation}
           isClickable={activeEdClickable}
-          checkClickable={() => checkItem()}
+          checkClickable={(item) => checkItem(item)}
           isEdSwitch={setActiveEdSection}
           updateEdList={setEdList}
 
@@ -1309,6 +1403,9 @@ export default MainSection;
 // - Just added ability to assign unique IDs for education elements, fine tune 
 //   Make sure there are no bugs in functionality. using Math.random()
 //
+// - (WORKING, but further testing is required) Items require two presses on the 
+//   delete button to be removed from the DOM. 
+//   *** NEED CODE CLEANUP ASAP ***
    
 
 
