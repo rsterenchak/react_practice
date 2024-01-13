@@ -446,7 +446,7 @@ return(
 
 }
 
-function EducationDateElement({
+function ExperienceNameElement({
   item,
   activeEducation,
   isEdSection
@@ -459,6 +459,66 @@ function EducationDateElement({
 return(
 
   <div 
+    className='experienceName' 
+    style={myStyle}
+  >
+
+  {isEdSection ? (
+
+    <>
+
+    <div className='educationSchool'>{item.Company}</div>
+    <div className='educationDegree'>{item.Job}</div>
+    <div className='educationDegree'>{item.Description}</div>
+
+    </>
+
+  ) : (
+
+    <>
+
+    <div className='educationSchool'>{item.Company}</div>
+    <div className='educationDegree'>{item.Job}</div>
+    <div className='educationDegree'>{item.Description}</div>
+    
+    </>
+
+  )}
+
+  </div>
+
+);
+
+}
+
+function EducationDateElement({
+  item,
+  activeEducation,
+  isEdSection
+}) {
+
+  const myStyle = {
+    
+  }
+
+  let start = item.StartDate;
+  let end = item.EndDate;
+
+
+  let firstMonth = start.slice(5,7);
+  let firstYear = start.slice(0,4);
+  
+  let secondMonth = end.slice(5,7);
+  let secondYear = end.slice(0,4);
+  
+  let combinedFirst = firstMonth + '/' + firstYear;
+  let combinedSecond = secondMonth + '/' + secondYear;
+
+
+
+return(
+
+  <div 
     className='educationDate' 
     style={myStyle}
   >
@@ -467,7 +527,7 @@ return(
 
     <>
 
-      <div className='educationStart'>{item.StartDate} - {item.EndDate}</div>
+      <div className='educationStart'>{combinedFirst} - {combinedSecond}</div>
       <div className='educationEnd'>{item.Location}</div>
 
     </>
@@ -476,7 +536,7 @@ return(
 
     <>
 
-      <div className='educationStart'>{item.StartDate} - {item.EndDate}</div>
+      <div className='educationStart'>{combinedFirst} - {combinedSecond}</div>
       <div className='educationEnd'>{item.Location}</div>
 
     </>
@@ -499,10 +559,26 @@ function ExperienceDateElement({
     
   }
 
+  let start = item.StartDate;
+  let end = item.EndDate;
+
+
+  let firstMonth = start.slice(5,7);
+  let firstYear = start.slice(0,4);
+  
+  let secondMonth = end.slice(5,7);
+  let secondYear = end.slice(0,4);
+  
+  let combinedFirst = firstMonth + '/' + firstYear;
+  let combinedSecond = secondMonth + '/' + secondYear;
+
+
+
+
 return(
 
   <div 
-    className='educationDate' 
+    className='experienceDate' 
     style={myStyle}
   >
 
@@ -510,7 +586,7 @@ return(
 
     <>
 
-      <div className='educationStart'>{item.StartDate} - {item.EndDate}</div>
+      <div className='educationStart'>{combinedFirst} - {combinedSecond}</div>
       <div className='educationEnd'>{item.Location}</div>
 
     </>
@@ -519,7 +595,7 @@ return(
 
     <>
 
-      <div className='educationStart'>{item.StartDate} - {item.EndDate}</div>
+      <div className='educationStart'>{combinedFirst} - {combinedSecond}</div>
       <div className='educationEnd'>{item.Location}</div>
 
     </>
@@ -594,6 +670,9 @@ function EducationEditMenu({
 
   let locationType = typeof isLocation;
 
+
+
+
   function handleListUpdate(){
 
     if(handleValidation() === true){
@@ -602,8 +681,21 @@ function EducationEditMenu({
 
     else{
 
-      // console.log(educationList);
-      // console.log(sendKey);
+      // console.log(isStart); // 2024-01-03
+      // console.log(isFinished); // 2024-01-10
+
+      // ** convert isStart and isFinished to formatted date **
+      // convertDates(isStart, isFinished);
+
+/*       let firstMonth = isStart.slice(5,7);
+      let firstYear = isStart.slice(0,4);
+  
+      let secondMonth = isFinished.slice(5,7);
+      let secondYear = isFinished.slice(0,4);
+  
+      let combinedFirst = firstMonth + '/' + firstYear;
+      let combinedSecond = secondMonth + '/' + secondYear; */
+
 
       newEducationListAdded[0].School = isSchool;
       newEducationListAdded[0].title = isDegree;
@@ -612,6 +704,7 @@ function EducationEditMenu({
       newEducationListAdded[0].EndDate = isFinished;
       newEducationListAdded[0].Location = isLocation;    
  
+
       newEducationList.push(newEducationListAdded);
 
 
@@ -635,11 +728,6 @@ function EducationEditMenu({
     let endValidation = false
     let locationValidation = false
 
-/*     console.log(isSchool);
-    console.log(isDegree);
-    console.log(isStart);
-    console.log(isFinished);
-    console.log(isLocation); */
 
     // if school is string
     if(schoolType === 'string'){
@@ -736,7 +824,7 @@ function EducationEditMenu({
 
     }
 
-    // else degree is object
+    // else start is object
     else{
 
       // console.log('isStart is object')
@@ -754,7 +842,7 @@ function EducationEditMenu({
 
     }
 
-    // if start is string
+    // if end is string
     if(endType === 'string'){
 
       // console.log('isFinished is string')
@@ -772,7 +860,7 @@ function EducationEditMenu({
 
     }
 
-    // else degree is object
+    // else end is object
     else{
 
       // console.log('isFinished is object')
@@ -790,7 +878,7 @@ function EducationEditMenu({
 
     }
 
-    // if start is string
+    // if location is string
     if(locationType === 'string'){
 
       // console.log('isLocation is string')
@@ -808,7 +896,7 @@ function EducationEditMenu({
 
     }
 
-    // else degree is object
+    // else location is object
     else{
 
       // console.log('isLocation is object')
@@ -1924,7 +2012,7 @@ function MainSection() {
     );    
 
     // ** Experience drop **
-/*     let listExperienceInfo = activeExList.map(item => 
+    let listExperienceInfo = activeExList.map(item => 
 
       <ExperienceNameElement 
         item={item}
@@ -1932,8 +2020,8 @@ function MainSection() {
         isExSection={activeExSection}
         activeExperience
       />
-      );
-*/ 
+    );
+
 
     let listExperienceDates = activeExList.map(item => 
   
@@ -2286,7 +2374,7 @@ function MainSection() {
               </div>
               <div className="infoColumn2">
 
-                {/** {listExperienceInfo} */}
+                {listExperienceInfo}
 
               </div>
             </div>
