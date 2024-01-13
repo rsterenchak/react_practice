@@ -143,20 +143,6 @@ function DropButton2({
 
   const [currentList, setList] = useState(isEducationList);
 
-/*   function handleUpdate(){
-    listItems = currentList.map(item => 
-
-      <EducationElement 
-        item={item}
-        key={item.id}
-        isMenu={activeMenu === 1}
-        onShowEdit={() => 
-          setupEditMenu(item.id)
-        } 
-      />
-      
-      );
-  } */
 
   function setupEditMenu(itemKey){
 
@@ -192,7 +178,6 @@ function DropButton2({
 
 
   function addItem(){
-    console.log('Runs dropdown2 -> addItem');
 
     let newEducationList = currentList;
 
@@ -212,9 +197,7 @@ function DropButton2({
 
     setEducationList(newEducationList) // set new item to state -> DOM 
     
-    checkClickable(); // Determines '+' button clickability using isClickable
-
-    // console.log(currentList);
+    checkClickable(newEducationList); // Determines '+' button clickability using isClickable
 
   }
 
@@ -227,18 +210,19 @@ function DropButton2({
 
   function cleanAfterDelete(item){
     
-    console.log('clean after delete');
-    // console.log(item);
-    // console.log(isEducationList);
-    
+    console.log('runs cleanAfterDelete');
+    console.log(item);
+
     if(item === undefined){
 
       setList(isEducationList)
-
+      // updateEdList(isEducationList)
     }
     else{
 
       setList(item)
+      // updateEdList(item)
+      // setEducationList(item) // async issue is not updating until after checkClickable()
     
     }
 
@@ -793,17 +777,12 @@ function EducationEditMenu({
 
   function handleDelete(){
     
-    console.log('Runs handleDelete - showing updated array');
-
-
     educationList = newEducationList;
 
     const newList = educationList;
 
     // updateMainState(educationList); // create passFunction that runs function that updates state for two componenets up
     
-    
-
     setupEducationList(newList);
     updateMainState(newList);
 
@@ -813,7 +792,7 @@ function EducationEditMenu({
     
     setEdOn(true); // turns Education section information back on      
 
-    console.log(newList); // ** shows updated array **
+    
   }
 
 
@@ -1150,29 +1129,36 @@ function MainSection() {
   {/* Check educationList last element to see if School property is not equal to ('') */}
   function checkItem(item){
 
-    console.log('Runs checkItem');
+    console.log('runs checkItem');
+    
+    // when i click on add button item is underfined, this needs to be passed to checkItem(item)
+
     console.log(item);
-    
-    console.log(activeEdList);
-    console.log(activeEducation);
 
-    educationList = item
-    
-    
-    let lastItem = activeEdList.length - 1;
+    if(item !== undefined){
 
-    if(activeEdList.length > 0){
+      let lastItem = item.length - 1;
 
-      if((activeEdList[lastItem].School) === ''){
+      if(item.length > 0){
 
-        setEdClickable(false);
+        if((item[lastItem].School) === ''){
 
+          setEdClickable(false);
+          console.log('entered if > if - set false');
+        }
+        else {
+
+          setEdClickable(true);
+          console.log('entered if > else - set true');
+        }
       }
-      else {
+      else{
 
         setEdClickable(true);
 
+        console.log('entered else - set true');
       }
+    
     }
     else{
 
@@ -1196,7 +1182,6 @@ function MainSection() {
 
           
           newArray.push(activeEducation[counter])
-          console.log(newArray);
 
         }
 
@@ -1206,11 +1191,11 @@ function MainSection() {
     }
 
 
-    console.log(newArray); //  showing updated array without element
+    // console.log(newArray); //  showing updated array without element
     setActiveEducation(newArray)
     setEdList(newArray) 
     
-    console.log(activeEdList); // showing old array with element
+    // console.log(activeEdList); // showing old array with element
     // console.log(activeEdList);
 
   }
@@ -1221,8 +1206,6 @@ function MainSection() {
   }
 
   function cleanupForDrop1(){
-
-    console.log('run cleanup for Dropdown 1');
 
     setActiveIndex(0);
 
