@@ -365,6 +365,42 @@ return(
 
 }
 
+{/** Try lowering states for isItemHighlighted into individual components, containing independent states */}
+function ExperienceElement({
+  item,
+  isMenu,
+  onShowEdit,
+  sendKey
+}) {
+
+  const [isItemHighlighted, setItemHighlighted] = useState(false);
+
+  const myStyle = {
+    border: isItemHighlighted ? '1px solid red' : '1px solid blue'
+    
+  }
+  
+  {/** isActive tracks regular div, isEdit will track edit component rendering*/}
+  {/** On clicking an <li>, set isEdit state to equal 1(EditMenu) instead of 0(MainMenu)  */}
+
+
+return(
+
+  <li 
+    onClick={onShowEdit}
+    onMouseEnter={() => setItemHighlighted(true)} 
+    onMouseLeave={() => setItemHighlighted(false)} 
+    className='educationItem' 
+    key={item.id} 
+    style={myStyle}
+  >
+    {item.title}
+  </li>
+
+);
+
+}
+
 
 {/** Currently working on elements to be added to middle section when array is populated */}
 function EducationNameElement({
@@ -959,12 +995,677 @@ function EducationEditMenu({
 
 }
 
+function ExperienceEditMenu({
+  onShowEdit,
+  sendKey,
+  educationList, // activeEducation -> isEducationList -> educationList
+  runCheck,
+  setupEducationList, // setList -> setupEducationList
+  setEdOn,
+  updateMainState
+}){
+
+
+  const filteredItemCompany = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.Company
+  );  
+
+  const filteredItemJob = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.Job
+  );
+
+  const filteredItemDescription = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.Description
+  );  
+
+  const filteredItemStart = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.StartDate
+  );  
+
+  const filteredItemFinished = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.EndDate
+  );  
+
+  const filteredItemLocation = educationList.filter(education => education.id === sendKey).map(filteredEducation => 
+    filteredEducation.Location
+  );  
+
+  const newEducationList = educationList.filter((education) => education.id !== sendKey); // list without element you are working with
+
+  const newEducationListAdded = educationList.filter((education) => education.id === sendKey);
+
+  const [isSubmitHovered, setSubmitHovered] = useState(false);
+  const [isCancelHovered, setCancelHovered] = useState(false); 
+  const [isDeleteHovered, setDeleteHovered] = useState(false); 
+
+  const [isSchoolInput, setSchoolInput] = useState(false);
+  const [isDegreeInput, setDegreeInput] = useState(false);
+  const [isDescriptionInput, setDescriptionInput] = useState(false);
+  const [isStartInput, setStartInput] = useState(false);
+  const [isEndInput, setEndInput] = useState(false);
+  const [isLocationInput, setLocationInput] = useState(false);
+
+  const [isSchool, setSchool] = useState(filteredItemCompany);
+  const [isDegree, setDegree] = useState(filteredItemJob);
+  const [isDescription, setDescription] = useState(filteredItemDescription);
+  const [isStart, setStart] = useState(filteredItemStart);
+  const [isFinished, setFinished] = useState(filteredItemFinished);
+  const [isLocation, setLocation] = useState(filteredItemLocation);
+
+  
+
+  let schoolType = typeof isSchool;
+  let degreeType = typeof isDegree;
+  let descriptionType = typeof isDescription;
+
+
+  let startType = typeof isStart;
+  let endType = typeof isFinished;  
+
+  let locationType = typeof isLocation;
+
+  function handleListUpdate(){
+
+    if(handleValidation() === true){
+
+    }
+
+    else{
+
+      // console.log(educationList);
+      // console.log(sendKey);
+
+      newEducationListAdded[0].Company = isSchool;
+      newEducationListAdded[0].title = isDegree;
+      newEducationListAdded[0].Job = isDegree;
+      newEducationListAdded[0].Description = isDescription;
+      newEducationListAdded[0].StartDate = isStart;
+      newEducationListAdded[0].EndDate = isFinished;
+      newEducationListAdded[0].Location = isLocation;    
+ 
+      newEducationList.push(newEducationListAdded);
+
+
+      // console.log(educationList);
+
+      onShowEdit(); // turn off edit menu
+
+      runCheck(); // allows clickability for adding new education
+
+      setEdOn(true); // turns Education section information back on
+    }
+
+    // console.log(educationList[sendKey]);
+  }
+
+  function handleValidation(){
+
+    let schoolValidation = false
+    let degreeValidation = false
+    let descriptionValidation = false
+    let startValidation = false
+    let endValidation = false
+    let locationValidation = false
+
+
+    // if school is string
+    if(schoolType === 'string'){
+
+      // console.log('isSchool is string')
+
+      if(isSchool.length > 0){
+
+        schoolValidation = true
+        setSchoolInput(false)
+
+      }
+      else{
+
+        schoolValidation = false
+        setSchoolInput(true)
+
+      }
+
+    }
+
+    // else school is object
+    else{
+
+      // console.log('isSchool is object')
+      
+      if(isSchool[0].length > 0){
+
+        schoolValidation = true
+        setSchoolInput(false)
+      }
+      else{
+
+        schoolValidation = false
+        setSchoolInput(true)
+        
+
+      }
+
+    }
+
+    // if degree is string
+    if(degreeType === 'string'){
+
+      // console.log('isDegree is string')
+      
+      if(isDegree.length > 0){
+
+        degreeValidation = true
+        setDegreeInput(false)
+      }
+      else{
+
+        degreeValidation = false
+        setDegreeInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      // console.log('isDegree is object')
+      if(isDegree[0].length > 0){
+
+        degreeValidation = true
+        setDegreeInput(false)
+      }
+      else{
+
+        degreeValidation = false
+        setDegreeInput(true)
+
+      }      
+
+    }
+
+    // if degree is string
+    if(descriptionType === 'string'){
+
+      // console.log('isDegree is string')
+      
+      if(isDescription.length > 0){
+
+        descriptionValidation = true
+        setDescriptionInput(false)
+      }
+      else{
+
+        descriptionValidation = false
+        setDescriptionInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      // console.log('isDegree is object')
+      if(isDescription[0].length > 0){
+
+        descriptionValidation = true
+        setDescriptionInput(false)
+      }
+      else{
+
+        descriptionValidation = false
+        setDescriptionInput(true)
+
+      }      
+
+    }
+
+
+    // if start is string
+    if(startType === 'string'){
+
+      // console.log('isStart is string')
+      if(isStart.length > 0){
+
+        startValidation = true
+        setStartInput(false)
+      }
+      else{
+
+        startValidation = false
+        setStartInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      // console.log('isStart is object')
+      if(isStart[0].length > 0){
+
+        startValidation = true
+        setStartInput(false)
+      }
+      else{
+
+        startValidation = false
+        setStartInput(true)
+
+      }      
+
+    }
+
+    // if start is string
+    if(endType === 'string'){
+
+      // console.log('isFinished is string')
+      if(isFinished.length > 0){
+
+        endValidation = true
+        setEndInput(false)
+      }
+      else{
+
+        endValidation = false
+        setEndInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      // console.log('isFinished is object')
+      if(isFinished[0].length > 0){
+
+        endValidation = true
+        setEndInput(false)
+      }
+      else{
+
+        endValidation = false
+        setEndInput(true)
+
+      }      
+
+    }
+
+    // if start is string
+    if(locationType === 'string'){
+
+      // console.log('isLocation is string')
+      if(isLocation.length > 0){
+
+        locationValidation = true
+        setLocationInput(false)
+      }
+      else{
+
+        locationValidation = false
+        setLocationInput(true)
+
+      }      
+
+    }
+
+    // else degree is object
+    else{
+
+      // console.log('isLocation is object')
+      if(isLocation[0].length > 0){
+
+        locationValidation = true
+        setLocationInput(false)
+      }
+      else{
+
+        locationValidation = false
+        setLocationInput(true)
+
+      }      
+
+    }    
+
+
+
+    // Complete check for returning false or true to handleListUpdate()
+    if((schoolValidation && degreeValidation && startValidation && endValidation && locationValidation) === true){
+
+      return false
+
+    }
+
+    else{
+
+      return true
+
+    }
+
+
+
+  }
+
+  function handleCancel(){
+
+    onShowEdit();
+    runCheck(educationList); // allows clickability for adding new education
+    setEdOn(true);
+
+  }
+
+  function handleDelete(){
+    
+    educationList = newEducationList;
+
+    const newList = educationList;
+
+    // updateMainState(educationList); // create passFunction that runs function that updates state for two componenets up
+    
+    setupEducationList(newList);
+    updateMainState(newList);
+
+    onShowEdit(); // turn off edit menu
+
+    runCheck(newList); // allows clickability for adding new education
+    
+    setEdOn(true); // turns Education section information back on      
+
+    
+  }
+
+
+  function handleSchoolChange (a){
+    
+    setSchool(a.target.value);
+  }
+
+  function handleDegreeChange (e){
+    setDegree(e.target.value);
+  }  
+
+  function handleDescriptionChange (f){
+    setDescription(f.target.value);
+  }  
+
+  function handleStartChange (b){
+    setStart(b.target.value);
+  } 
+
+  function handleEndChange (c){
+    setFinished(c.target.value);
+  } 
+
+  function handleLocationChange (d){
+    setLocation(d.target.value);
+  } 
+
+
+  const submitStylings = {
+    
+    backgroundColor: isSubmitHovered ? '#86c5da' : '#c1e1ec',
+    cursor: 'pointer'
+
+  }
+
+  const cancelStylings = {
+
+    backgroundColor: isCancelHovered ? '#64e764' : 'lightgreen',
+    cursor: 'pointer'
+
+  }
+
+  const deleteStylings = {
+
+    backgroundColor: isDeleteHovered ? '#f73b26' : '#f97566',
+    cursor: 'pointer'
+
+  }
+
+  const schoolInputStylings = {
+    border: isSchoolInput ? '1px solid red' : '1px solid black'
+
+  }
+
+  const degreeInputStylings = {
+    border: isDegreeInput ? '1px solid red' : '1px solid black'
+
+  }
+
+  const descriptionInputStylings = {
+    border: isDescriptionInput ? '1px solid red' : '1px solid black'
+
+  }
+
+  const startInputStylings = {
+    border: isStartInput ? '1px solid red' : '1px solid black'
+
+  }  
+
+  const endInputStylings = {
+    border: isEndInput ? '1px solid red' : '1px solid black'
+
+  }  
+
+  const locationInputStylings ={
+    border: isLocationInput ? '1px solid red' : '1px solid black'
+  }
+
+  return(
+    <>
+      <div className='formExperience'>
+
+        <p className='formSchool'>School:</p>
+        <input
+          onChange={handleSchoolChange}
+          className='schoolInput' 
+          type='text'
+          value={isSchool} // value should be taken from educationList initially, then allowed to change from isSchool
+          style={schoolInputStylings}
+        >
+        </input>
+
+        <p className='formDegree'>Degree:</p>
+        <input
+          onChange={handleDegreeChange}
+          className='degreeInput' 
+          type='text'
+          value={isDegree}
+          style={degreeInputStylings}
+        >
+          </input>
+
+        <p className='formDescription'>Description:</p>
+        <input
+          onChange={handleDescriptionChange}
+          className='descriptionInput' 
+          type='text'
+          value={isDescription}
+          style={descriptionInputStylings}
+        >
+        </input>          
+
+        <p className='formStartDate'>Start:</p>
+        <input 
+          onChange={handleStartChange}
+          className='startDateInput' 
+          type='date'
+          value={isStart}
+          style={startInputStylings}
+        >
+        </input>
+
+        <p className='formEndDate'>Finished:</p>
+        <input 
+          onChange={handleEndChange}
+          className='endDateInput' 
+          type='date'
+          value={isFinished}
+          style={endInputStylings}
+        >
+        </input>
+
+        <p className='formLocation'>Location:</p>
+        <input 
+          onChange={handleLocationChange}
+          className='locationInput' 
+          type='text'
+          value={isLocation}
+          style={locationInputStylings}
+        >
+        </input>
+      </div>
+
+      <div className='formEducationControl'>
+
+        <div 
+          onClick={handleListUpdate} // Perform Validation
+          className='formEducationSubmit'
+          onMouseEnter={() => setSubmitHovered(true)}
+          onMouseLeave={() => setSubmitHovered(false)}
+          style={submitStylings}
+        >
+          Submit
+        
+        </div>
+        <div 
+          onClick={handleCancel}
+          className='formEducationCancel'
+          onMouseEnter={() => setCancelHovered(true)}
+          onMouseLeave={() => setCancelHovered(false)}
+          style={cancelStylings}
+        >
+          Cancel
+        
+        </div>
+
+        <div 
+          onClick={handleDelete}
+          className='formEducationDelete'
+          onMouseEnter={() => setDeleteHovered(true)}
+          onMouseLeave={() => setDeleteHovered(false)}
+          style={deleteStylings}
+        >
+          Delete
+        
+        </div>        
+
+      </div>
+
+    </>
+  );
+
+}
+
 function DropButton3({
   isActive,
-  onShow
+  onShow,
+  isEducationList, // activeExList
+  setEducationList,
+  isClickable,
+  checkClickable,
+  isEdSwitch,
+  updateEdList
 }) {
 
+
+  const [activeMenu, setActiveMenu] = useState(0); 
+
   const [isHighlighted, setHighlighted] = useState(false);
+  const [isButtonHighlighted, setButtonHighlighted] = useState(false);
+
+  const [isSelectedEducationId, setSelectedEducationId] = useState(0);
+
+  const [currentList, setList] = useState(isEducationList);
+
+
+  function setupEditMenu(itemKey){
+
+    setActiveMenu(1)
+    setSelectedEducationId(itemKey);
+    isEdSwitch(false)
+    
+    // setList(isEducationList) // works in getting rid of element!!
+
+  }
+
+  let listItems = currentList.map(item => 
+
+    <ExperienceElement 
+      item={item}
+      key={item.id}
+      isMenu={activeMenu === 1}
+      onShowEdit={() => 
+        setupEditMenu(item.id)
+      } 
+    />
+    
+    );
+
+  {/** try creating custom function for onShowEdit*/}
+  
+  const clickabilityStyling = {
+    backgroundColor: isButtonHighlighted ? "lightblue" : "white", 
+    cursor: 'pointer',
+    pointerEvents: isClickable ? 'auto' : 'none' 
+      
+  }  
+
+
+  function addItem(){
+
+    let newEExperienceList = currentList;
+
+    let newItem = {
+      id: Math.random(),
+      title: 'Item ' + (isEducationList.length + 1),
+      Company: '',
+      Job: '',
+      Description: '',
+      StartDate: '',
+      EndDate: '',
+      Location: '',
+    }
+
+    // isEducationList.push(newItem); // sets new item to array
+  
+    newEExperienceList.push(newItem); // sets new item to array
+
+    setEducationList(newEExperienceList) // set new item to state -> DOM 
+    
+    checkClickable(newEExperienceList); // Determines '+' button clickability using isClickable
+
+  }
+
+  // shows items and updates state within component itself (currentList)
+  function cleanItems(){
+    onShow()
+    setList(isEducationList)
+    checkClickable()
+  }
+
+  function cleanAfterDelete(item){
+    
+    console.log('runs cleanAfterDelete');
+    console.log(item);
+
+    if(item === undefined){
+
+      setList(isEducationList)
+
+    }
+    else{
+
+      setList(item)
+    
+    }
+
+    checkClickable(item)
+  }
 
   return (
     <div className="dropDown3">
@@ -973,7 +1674,7 @@ function DropButton3({
         <div className="experienceDetails">Experience</div>
         {isHighlighted ? ( 
         <img
-          onClick={onShow} 
+          onClick={cleanItems} 
           className="drop1" 
           onMouseEnter={() => setHighlighted(true)} 
           onMouseLeave={() => setHighlighted(false)} 
@@ -981,14 +1682,82 @@ function DropButton3({
           src={dropIconDown} 
         />
         ) : (
-        <img onClick={onShow} className="drop1" onMouseEnter={() => setHighlighted(true)} onMouseLeave={() => setHighlighted(false)} style={{ color: "none" }} src={dropIconDown} />
+        <img onClick={cleanItems} 
+          className="drop1" 
+          onMouseEnter={() => setHighlighted(true)} 
+          onMouseLeave={() => setHighlighted(false)} 
+          style={{ color: "none" }} 
+          src={dropIconDown} 
+        />
         )
         }
+
       </div>
 
-      {isActive ? (<div>Div</div>) : (<div></div>)}
+      {activeMenu === 0 && isActive ? (
+      <div className='educationList'>
+        
+        <ul>
 
-    </div>
+          {listItems}
+        
+        </ul>
+        
+      {/** Disable buttons ability to highlight with state, checks bottom ul element */}
+
+
+
+      {isButtonHighlighted ? ( 
+
+        <div 
+          onClick={addItem}
+          className='addEducation'
+          onMouseEnter={() => setButtonHighlighted(true)} 
+          onMouseLeave={() => setButtonHighlighted(false)} 
+          style={clickabilityStyling}        
+        >+
+        </div>
+        
+        ) : (
+      
+        <div 
+          onClick={addItem}
+          className='addEducation'
+          onMouseEnter={() => setButtonHighlighted(true)} 
+          onMouseLeave={() => setButtonHighlighted(false)} 
+          style={clickabilityStyling}        
+        >+
+        </div>
+      )}
+        
+      
+
+
+        </div>
+        ) : (<div></div>)}
+
+      {activeMenu === 1 && isActive ? (
+      
+        <ExperienceEditMenu 
+          sendKey={isSelectedEducationId} 
+          isMenu={activeMenu === 0}
+          onShowEdit={() => 
+            setActiveMenu(0)
+          }
+          educationList={currentList}
+          setupEducationList={setList}
+          runCheck ={(item) => cleanAfterDelete(item)}
+          setEdOn={isEdSwitch}
+          updateMainState={updateEdList} // tied to dropDownButton 2 list
+        /> 
+      
+      ) : (
+      
+        <div></div>
+      
+      )}
+
+        </div>  
   ); 
 }
 
@@ -1078,15 +1847,20 @@ function MainSection() {
   // Create array that will be meant to hold Education objects
   // values for object - (School, Degree, StartDate, EndDate, Location)
   let educationList = [];
+  let experienceList = []; // ** Experience drop **
 
   const [activeEducation, setActiveEducation] = useState(educationList);
+  const [activeExperience, setActiveExperience] = useState(experienceList); // ** Experience drop **
+
   const [activeEdClickable, setEdClickable] = useState(true);
+  const [activeExClickable, setExClickable] = useState(true); // ** Experience drop **
 
   const [activeEdSection, setActiveEdSection] = useState(true); // responsible for turning off/on Education Info
+  const [activeExSection, setActiveExSection] = useState(true); // ** Experience drop **
 
   const [activeEdList, setEdList] = useState(activeEducation);
-
-  // mapped array within Main -> EducationNameElement -> 
+  const [activeExList, setExList] = useState(activeExperience); // ** Experience drop **
+ 
   let listEducationInfo = activeEdList.map(item => 
 
     <EducationNameElement 
@@ -1097,7 +1871,6 @@ function MainSection() {
     />
     );
 
-  // mapped array within Main -> EducationNameElement -> 
   let listEducationDates = activeEdList.map(item => 
 
     <EducationDateElement 
@@ -1107,6 +1880,28 @@ function MainSection() {
       activeEducation
     />
     );    
+
+    // ** Experience drop **
+/*     let listExperienceInfo = activeExList.map(item => 
+
+      <ExperienceNameElement 
+        item={item}
+        key={item.id}
+        isExSection={activeExSection}
+        activeExperience
+      />
+      );
+  
+    let listExperienceDates = activeExList.map(item => 
+  
+      <ExperienceDateElement 
+        item={item}
+        key={item.id}
+        isExSection={activeExSection}
+        activeExperience
+      />
+      );    
+ */  
 
 
   function handleNameChange (e){
@@ -1168,6 +1963,47 @@ function MainSection() {
 
   }
 
+  function checkExItem(item){
+
+    console.log('runs checkItem');
+    
+    // when i click on add button item is underfined, this needs to be passed to checkItem(item)
+
+    console.log(item);
+
+    if(item !== undefined){
+
+      let lastItem = item.length - 1;
+
+      if(item.length > 0){
+
+        if((item[lastItem].Job) === ''){
+
+          setExClickable(false);
+          console.log('entered if > if - set false');
+        }
+        else {
+
+          setExClickable(true);
+          console.log('entered if > else - set true');
+        }
+      }
+      else{
+
+        setExClickable(true);
+
+        console.log('entered else - set true');
+      }
+    
+    }
+    else{
+
+      setExClickable(true);
+
+    }
+
+  }
+
   function cleanEducationList(){
 
     let newArray = []
@@ -1202,6 +2038,32 @@ function MainSection() {
 
   function cleanExperienceList(){
 
+    console.log('runs cleanExperienceList');
+
+    let newArray = []
+
+    let counter = activeExperience.length - 1;
+
+    if(activeExperience.length > 0){
+
+      while(counter > -1){
+
+        if(activeExperience[counter].Job != ''){
+
+          
+          newArray.push(activeExperience[counter])
+
+        }
+
+        counter--;
+      }
+
+    }
+
+
+    console.log(newArray); //  showing updated array without element
+    setActiveExperience(newArray)
+    setExList(newArray)     
 
   }
 
@@ -1223,13 +2085,21 @@ function MainSection() {
   }
 
   function cleanupForDrop2(){
+    
+    console.log('run cleanupForDrop2');
 
     setActiveIndex(1)
 
-    checkItem();
+    checkExItem();
 
+    console.log(activeExClickable);
 
-    // cleanup isExperienceList
+    if(activeExClickable ===  false){
+
+      cleanExperienceList();
+
+    }
+
 
   }
 
@@ -1241,7 +2111,6 @@ function MainSection() {
 
     if(activeEdClickable === false){
 
-      // cleanup isEducationList - *** Needs fix to enable same sorting everytime (1/8/2024) ***
       cleanEducationList();
       
     }
@@ -1289,19 +2158,24 @@ function MainSection() {
         <DropButton2 
           isActive={activeIndex === 1}
           onShow={cleanupForDrop2} 
-          isEducationList={activeEdList} // before edit: activeEducation
+          isEducationList={activeEdList} 
           setEducationList={setActiveEducation}
           isClickable={activeEdClickable}
           checkClickable={(item) => checkItem(item)}
           isEdSwitch={setActiveEdSection}
           updateEdList={setEdList}
-
         />
 
         {/* React Component #3 */}
         <DropButton3 
           isActive={activeIndex === 2}
-          onShow={cleanupForDrop3}        
+          onShow={cleanupForDrop3}
+          isEducationList={activeExList} 
+          setEducationList={setActiveExperience}
+          isClickable={activeExClickable}
+          checkClickable={(item) => checkExItem(item)}
+          isEdSwitch={setActiveExSection}
+          updateEdList={setExList}                  
         />
 
       </div>

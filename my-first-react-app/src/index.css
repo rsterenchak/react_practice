@@ -300,6 +300,8 @@ ul {
   margin-bottom: 10px;
 }
 
+
+
 .formEducationControl {
   display: flex;
   flex-direction: row;
@@ -448,6 +450,42 @@ ul {
   border: 1px solid red;
   
 }
+
+.formExperience {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 35px 35px 35px 35px 35px 35px;
+  grid-template-areas: 
+  'formSchool schoolInput'
+  'formDegree degreeInput'
+  'formDescription descriptionInput'
+  'formStartDate startDateInput'
+  'formEndDate endDateInput'
+  'formLocation locationInput'
+  ;
+  width: auto;
+  height: auto;
+  font-size: 11px;
+  margin-bottom: 10px;
+}
+
+
+.formDescription {
+  display: flex;
+  justify-content: end;
+  font-size: 9.5px;
+  grid-area: formDescription;
+
+}
+
+.descriptionInput {
+  height: 20px;
+  grid-area: descriptionInput;
+}
+
+
 
 #selectionSec {
   display: flex;
