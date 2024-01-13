@@ -770,7 +770,7 @@ function EducationEditMenu({
   function handleCancel(){
 
     onShowEdit();
-    runCheck(); // allows clickability for adding new education
+    runCheck(educationList); // allows clickability for adding new education
     setEdOn(true);
 
   }
