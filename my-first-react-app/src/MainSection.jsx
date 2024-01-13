@@ -489,7 +489,49 @@ return(
 
 }
 
-  
+function ExperienceDateElement({
+  item,
+  activeEducation,
+  isEdSection
+}) {
+
+  const myStyle = {
+    
+  }
+
+return(
+
+  <div 
+    className='educationDate' 
+    style={myStyle}
+  >
+
+  {isEdSection ? (
+
+    <>
+
+      <div className='educationStart'>{item.StartDate} - {item.EndDate}</div>
+      <div className='educationEnd'>{item.Location}</div>
+
+    </>
+
+  ) : (
+
+    <>
+
+      <div className='educationStart'>{item.StartDate} - {item.EndDate}</div>
+      <div className='educationEnd'>{item.Location}</div>
+
+    </>
+
+  )}
+
+  </div>
+
+);
+
+}
+
 
 function EducationEditMenu({
   onShowEdit,
@@ -1459,7 +1501,7 @@ function ExperienceEditMenu({
     <>
       <div className='formExperience'>
 
-        <p className='formSchool'>School:</p>
+        <p className='formSchool'>Company:</p>
         <input
           onChange={handleSchoolChange}
           className='schoolInput' 
@@ -1469,7 +1511,7 @@ function ExperienceEditMenu({
         >
         </input>
 
-        <p className='formDegree'>Degree:</p>
+        <p className='formDegree'>Job Title:</p>
         <input
           onChange={handleDegreeChange}
           className='degreeInput' 
@@ -1891,7 +1933,8 @@ function MainSection() {
         activeExperience
       />
       );
-  
+*/ 
+
     let listExperienceDates = activeExList.map(item => 
   
       <ExperienceDateElement 
@@ -1901,7 +1944,7 @@ function MainSection() {
         activeExperience
       />
       );    
- */  
+  
 
 
   function handleNameChange (e){
@@ -2236,8 +2279,16 @@ function MainSection() {
             </div>
             <div className="bottomSec2">
               <div className="prHeader">Professional Experience</div>
-              <div className="dateColumn2" />
-              <div className="infoColumn2" />
+              <div className="dateColumn2">
+
+                {listExperienceDates} 
+
+              </div>
+              <div className="infoColumn2">
+
+                {/** {listExperienceInfo} */}
+
+              </div>
             </div>
             <div className="bottomSpace2" />
           </div>
