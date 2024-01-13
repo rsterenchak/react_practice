@@ -233,7 +233,7 @@ body {
   gap: 10px;
   width: 90%;
   margin-bottom: 10px;
-  border: 1px solid red;
+
 }
 
 ul {
@@ -242,7 +242,7 @@ ul {
   gap: 5px;
   margin: 0;
   padding: 0;
-  border: 1px solid red;
+
 }
 
 
@@ -783,21 +783,21 @@ ul {
 
 .bottomSec1 {
   display: grid;
-  grid-template-rows: 1fr 6fr;
+
   grid-template-columns: 1fr 2fr;
   grid-template-areas: 
     'edHeader edHeader'
     'dateColumn1 infoColumn1'
     ;
-  height: 50%;
-  width: 100%;
 
+  width: 100%;
 }
 
 .edHeader {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 35px;
   font-size: 20px;
   color: #013220;
   background-color: #ededed;
@@ -860,13 +860,13 @@ ul {
 
 .bottomSec2 {
   display: grid;
-  grid-template-rows: 1fr 6fr;
+
   grid-template-columns: 1fr 2fr;
    grid-template-areas: 
     'prHeader prHeader'
     'dateColumn2 infoColumn2'
    ;
-  height: 50%;
+
   width: 100%; 
 
 }
@@ -875,6 +875,7 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 35px;
   font-size: 20px;
   color: #013220;
   background-color: #ededed;

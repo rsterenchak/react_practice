@@ -340,7 +340,7 @@ function EducationElement({
   const [isItemHighlighted, setItemHighlighted] = useState(false);
 
   const myStyle = {
-    border: isItemHighlighted ? '1px solid red' : '1px solid blue'
+    border: isItemHighlighted ? '1px solid red' : '1px solid black'
     
   }
   
@@ -376,7 +376,7 @@ function ExperienceElement({
   const [isItemHighlighted, setItemHighlighted] = useState(false);
 
   const myStyle = {
-    border: isItemHighlighted ? '1px solid red' : '1px solid blue'
+    border: isItemHighlighted ? '1px solid red' : '1px solid black'
     
   }
   
