@@ -681,22 +681,6 @@ function EducationEditMenu({
 
     else{
 
-      // console.log(isStart); // 2024-01-03
-      // console.log(isFinished); // 2024-01-10
-
-      // ** convert isStart and isFinished to formatted date **
-      // convertDates(isStart, isFinished);
-
-/*       let firstMonth = isStart.slice(5,7);
-      let firstYear = isStart.slice(0,4);
-  
-      let secondMonth = isFinished.slice(5,7);
-      let secondYear = isFinished.slice(0,4);
-  
-      let combinedFirst = firstMonth + '/' + firstYear;
-      let combinedSecond = secondMonth + '/' + secondYear; */
-
-
       newEducationListAdded[0].School = isSchool;
       newEducationListAdded[0].title = isDegree;
       newEducationListAdded[0].Degree = isDegree;
@@ -946,9 +930,7 @@ function EducationEditMenu({
     educationList = newEducationList;
 
     const newList = educationList;
-
-    // updateMainState(educationList); // create passFunction that runs function that updates state for two componenets up
-    
+ 
     setupEducationList(newList);
     updateMainState(newList);
 
@@ -1891,10 +1873,15 @@ function DropButton3({
   ); 
 }
 
-function LoadButton(){
+function LoadButton({
+  setupEducationInfo,
+  setupPresets
+}){
 
   const [isHovered, setHovered] = useState(false);
   const [isMouse, setMouseClick] = useState(false); // setup another state for click down/up
+
+  const [isShown, setShown] = useState(false);
 
   const boxStyle = {
     boxShadow: isHovered ? isMouse ? 'none' : '0 2px 4px rgba(0, 0, 0, 0.4)' : "none",
@@ -1903,12 +1890,13 @@ function LoadButton(){
     
   }
 
-  const [isShown, setShown] = useState(false);
+
 
   return (
 
     
     <div className="loadExampleBox" 
+      onClick={setupPresets}
       onMouseEnter={() => setHovered(true)} 
       onMouseLeave={() => setHovered(false)}
 
@@ -1977,19 +1965,19 @@ function MainSection() {
   // Create array that will be meant to hold Education objects
   // values for object - (School, Degree, StartDate, EndDate, Location)
   let educationList = [];
-  let experienceList = []; // ** Experience drop **
+  let experienceList = []; 
 
   const [activeEducation, setActiveEducation] = useState(educationList);
-  const [activeExperience, setActiveExperience] = useState(experienceList); // ** Experience drop **
+  const [activeExperience, setActiveExperience] = useState(experienceList);
 
   const [activeEdClickable, setEdClickable] = useState(true);
-  const [activeExClickable, setExClickable] = useState(true); // ** Experience drop **
+  const [activeExClickable, setExClickable] = useState(true); 
 
   const [activeEdSection, setActiveEdSection] = useState(true); // responsible for turning off/on Education Info
-  const [activeExSection, setActiveExSection] = useState(true); // ** Experience drop **
+  const [activeExSection, setActiveExSection] = useState(true); // responsible for turning off/on Experience Info
 
   const [activeEdList, setEdList] = useState(activeEducation);
-  const [activeExList, setExList] = useState(activeExperience); // ** Experience drop **
+  const [activeExList, setExList] = useState(activeExperience); 
  
   let listEducationInfo = activeEdList.map(item => 
 
@@ -2011,28 +1999,71 @@ function MainSection() {
     />
     );    
 
-    // ** Experience drop **
-    let listExperienceInfo = activeExList.map(item => 
+  let listExperienceInfo = activeExList.map(item => 
 
-      <ExperienceNameElement 
-        item={item}
-        key={item.id}
-        isExSection={activeExSection}
-        activeExperience
-      />
-    );
+    <ExperienceNameElement 
+      item={item}
+      key={item.id}
+      isExSection={activeExSection}
+      activeExperience
+    />
+  );
 
 
-    let listExperienceDates = activeExList.map(item => 
+  let listExperienceDates = activeExList.map(item => 
   
-      <ExperienceDateElement 
-        item={item}
-        key={item.id}
-        isExSection={activeExSection}
-        activeExperience
-      />
-      );    
+    <ExperienceDateElement 
+      item={item}
+      key={item.id}
+      isExSection={activeExSection}
+      activeExperience
+    />
+  );    
   
+  
+  let presetEducation = [
+    
+    {
+      id: Math.random(),
+      title: 'Associates',
+      School: 'Yuppers Uni',
+      Degree: 'Associates',
+      StartDate: '2020-01-01',
+      EndDate: '2023-01-01',
+      Location: 'Redmond, WA',
+    }
+    
+  ]
+    
+  let presetExperience = [
+
+    {
+      id: Math.random(),
+      title: 'System Administrator',
+      Company: 'Booz Allen Hamilton',
+      Job: 'System Administrator',
+      Description: 'sdkfklsdjafl',
+      StartDate: '2021-10-23',
+      EndDate: '2024-06-17',
+      Location: 'Redmond, WA',
+    }
+    
+  ]
+      
+    
+      // onClick - run function that sets up pre-set values for state in Main()
+  function updateForPresets(){
+    
+    console.log('run updateForPresets function');
+
+    setActiveName('Billy Jefferson');
+    setActiveEmail('bjefferson@gmail.com');
+    setActivePhone('8884561234');
+    setActiveAddress('Somewhere');
+
+    setEdList(presetEducation) // Adds Education Presets to DOM
+    setExList(presetExperience) // Adds Experience Presets to DOM
+  }      
 
 
   function handleNameChange (e){
@@ -2248,10 +2279,6 @@ function MainSection() {
   }
 
 
-
-    // make function to be passed to DropButton2 -> EducationEditMenu -> tie to Submit button click
-
-
     return <>
     <div className="sideBar">
       <div className="logoSec">
@@ -2271,7 +2298,7 @@ function MainSection() {
         
 
 
-        {/* React Component #1 */}
+        {/* DropDown Component #1 */}
         <DropButton1 
           changeName={handleNameChange}
           changeEmail={handleEmailChange}
@@ -2285,7 +2312,7 @@ function MainSection() {
           isAddress={activeAddress}
         />
 
-        {/* React Component #2 */}
+        {/* DropDown Component #2 */}
         <DropButton2 
           isActive={activeIndex === 1}
           onShow={cleanupForDrop2} 
@@ -2297,7 +2324,7 @@ function MainSection() {
           updateEdList={setEdList}
         />
 
-        {/* React Component #3 */}
+        {/* DropDown Component #3 */}
         <DropButton3 
           isActive={activeIndex === 2}
           onShow={cleanupForDrop3}
@@ -2316,7 +2343,10 @@ function MainSection() {
         <div id="formatOptions">
           <div className="area4">
 
-            <LoadButton />
+            <LoadButton 
+              setupEducationInfo={setActiveEducation}
+              setupPresets={() => updateForPresets()}
+            />
             
             <DownloadButton />
 
