@@ -1948,11 +1948,11 @@ function DownloadButton({
 
 
 function MainSection({
-  isWindow
 }) {
 
   // Set up state for turning off/on MobileExtension.jsx
   const [isMobileExtension, setMobileExtension] = useState(false);
+  const [initialCheck, setInitialCheck] = useState(true);
 
   // Set up state for dropDown menu components
   const [activeIndex, setActiveIndex] = useState(0);
@@ -2304,23 +2304,56 @@ function MainSection({
 
   // upon render perform check
 
-  // initial render - on render check if matches (< 1291px) 
-  if(mediaQuery.matches){
+  console.log("rendered width: " + window.innerWidth);
 
-    if(mediaQuery.matches){
+  console.log(initialCheck);
 
+  // initial render - on render check if matches (< 1291px)
+  if(window.innerWidth < 1290){
+
+    if((window.innerWidth < 1290) && (initialCheck)){
+
+      // console.log('below 1290px');
+
+      setMobileExtension(true)// switch on mobileExtension - re-render
+      setInitialCheck(false)// turn off initial check
+
+    }
+    else{
+
+      // console.log('above 1290px');
 
     }
     
   }
-  
-  // concurrent watch - 
-  mediaQuery.onchange = (e) => {
 
-    if(e.matches){
+  // initial render - on render check if matches (> 1291px)
+  if(window.innerWidth > 1290){
 
+    if((window.innerWidth > 1290) && (initialCheck)){
+
+      // console.log('above 1290px: ' + window.innerWidth);
+
+      setMobileExtension(false)// switch on mobileExtension - re-render
+      setInitialCheck(false)// turn off initial check
 
     }
+    else{
+
+      // console.log('below 1290px: ' + window.innerWidth);
+
+    }
+    
+  }  
+  
+
+  // concurrent watch - when threshold is crossed
+  //                  - turn on InitialCheck()
+  mediaQuery.onchange = (e) => {
+
+    console.log(window.innerWidth);
+    setInitialCheck(true);
+
   }
 
     return <>
@@ -2466,7 +2499,10 @@ function MainSection({
     (
 
       <>
-        <MobileExtension />
+        <MobileExtension 
+          passedEducationUpdater={() => updateForPresets()}
+          passedResumeClear={() => clearResumeInfo()}
+        />
       </>
     ) : (
 

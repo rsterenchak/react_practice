@@ -1152,26 +1152,25 @@ ul {
 
   }
   
-  #footAreaText {
+  .footAreaText {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 36px;
     height: 50px;
     width: 250px;    
-    border: 1px solid red;
   }
   
-  #footAreaText::before {
+  .footAreaText::before {
     content: '@rsterenchak';
     
   }
   
-  #footAreaLogo {
-    
+  .footAreaLogo {
+    padding-top: 10px;
     height: 50px;
     width: 75px;    
-    border: 1px solid blue;
+
   }
   
   #selectionSec {
@@ -1331,20 +1330,32 @@ ul {
     border: 1px solid red;
   }
   
-  #formatOptionsInner1 {
-    max-width: 325px;
+  .formatOptionsInner1 {
+    max-width: 290px;
     border: 1px solid red;
   }
   
-  #formatOptionsInner2 {
+  .formatOptionsInner2 {
+    max-width: 290px;
     
-    max-width: 325px;
   }
   
   #footerAreaNew {
     max-width: 350px;
    
   }  
+
+  .footAreaText {
+    font-size: 24px;
+    width: 200px;
+    border: 1px solid red;
+  }
   
+  .footAreaLogo {
+    display: flex;
+    padding-top: 0px;
+    justify-content: start;
+    border: 1px solid red;
+  }
   
 }

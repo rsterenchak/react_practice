@@ -26,7 +26,6 @@ if(mediaQuery.matches){
     <React.StrictMode>
       <div id='outerContainer'>
         <MainSection 
-          isWindow={window.innerWidth}
         />
         {/* <MobileExtension /> */}
      </div>
@@ -39,7 +38,6 @@ else{
     <React.StrictMode>
       <div id='outerContainer'>
         <MainSection 
-          isWindow={window.innerWidth}
         />
       </div>
     </React.StrictMode>,
@@ -61,7 +59,6 @@ mediaQuery.onchange = (e) => {
     <React.StrictMode>
       <div id='outerContainer'>
         <MainSection 
-          isWindow={window.innerWidth}
         />
         {/* <MobileExtension /> */}
      </div>
@@ -74,7 +71,6 @@ mediaQuery.onchange = (e) => {
       <React.StrictMode>
         <div id='outerContainer'>
           <MainSection 
-            isWindow={window.innerWidth}
           />
         </div>
       </React.StrictMode>,

@@ -3,7 +3,7 @@ import trashIcon from './assets/trash-outline.svg'
 import './index.css'
 
 function ClearButtonMobile({
-    runExperienceUpdate
+  runResumeClear
   }){
   
     // console.log('Opened LoadButtonMobile.jsx');
@@ -27,7 +27,7 @@ function ClearButtonMobile({
       
       <div className="formatOptionsInner2" 
 
-        onClick={runExperienceUpdate}
+        onClick={runResumeClear}
       
         onMouseEnter={() => setHovered(true)} 
         onMouseLeave={() => setHovered(false)}

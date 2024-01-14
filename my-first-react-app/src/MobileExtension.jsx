@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import gitIcon from './assets/github.svg'
 import LoadButtonMobile from './LoadButtonMobile.jsx';
 import ClearButtonMobile from './ClearButtonMobile.jsx';
 import './index.css'
 
 function MobileExtension({
-
+  passedEducationUpdater,
+  passedResumeClear
 }) {
   
   
@@ -14,11 +16,12 @@ function MobileExtension({
         <div id='innerFoot1'>
           <div id='formatOptionsNew'>
 
-            <LoadButtonMobile 
+            <LoadButtonMobile
+              runEducationUpdater={passedEducationUpdater}
             />
 
             <ClearButtonMobile
-
+              runResumeClear={passedResumeClear}
             />
 
           </div>
@@ -28,8 +31,11 @@ function MobileExtension({
         <div id='innerFoot2'>
           <div id='footerAreaNew'>
             <div id='footerAreaInner'>
-              <div id='footAreaText'></div>
-              <div id='footAreaLogo'></div>
+              <div className='footAreaText'></div>
+              <a href='https://github.com/rsterenchak' target="_blank">
+                <img className='footAreaLogo' src={gitIcon} alt={'github icon link'}></img>
+              </a>
+              {/* <div id='footAreaLogo'></div> */}
             </div>
           </div>
 
