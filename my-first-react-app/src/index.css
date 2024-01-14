@@ -473,6 +473,7 @@ ul {
 
 
 .formDescription {
+  font-size: 9.5px;
   display: flex;
   justify-content: end;
   grid-area: formDescription;
