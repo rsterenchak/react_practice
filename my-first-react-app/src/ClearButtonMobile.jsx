@@ -3,8 +3,7 @@ import trashIcon from './assets/trash-outline.svg'
 import './index.css'
 
 function ClearButtonMobile({
-    setupEducationInfo,
-    setupPresets
+    runExperienceUpdate
   }){
   
     // console.log('Opened LoadButtonMobile.jsx');
@@ -28,7 +27,7 @@ function ClearButtonMobile({
       
       <div className="formatOptionsInner2" 
 
-        // onClick={setupPresets}
+        onClick={runExperienceUpdate}
       
         onMouseEnter={() => setHovered(true)} 
         onMouseLeave={() => setHovered(false)}

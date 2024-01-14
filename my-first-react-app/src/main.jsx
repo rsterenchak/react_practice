@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM, { hydrateRoot } from 'react-dom/client'
 import { createRoot } from 'react-dom/client';
 import './index.css'
 import MainSection from './MainSection.jsx'
 import MobileExtension from './MobileExtension.jsx';
+
 
 const root = createRoot(document.getElementById('root'));
 
@@ -11,17 +12,23 @@ const root = createRoot(document.getElementById('root'));
 const mediaQuery = window.matchMedia("(max-width: 1290px)");
 
 // State may need to be lifted from <MainSection> to set up download, and template data buttons in MobileExtension 
-
+ 
 
 // Initial call
 if(mediaQuery.matches){
+
+  console.log(window.innerWidth);
+
   console.log('Initial call w/ mainsection and mobileextension');  
 
   root.render(
+
     <React.StrictMode>
       <div id='outerContainer'>
-        <MainSection />
-        <MobileExtension />
+        <MainSection 
+          isWindow={window.innerWidth}
+        />
+        {/* <MobileExtension /> */}
      </div>
     </React.StrictMode>,
   )
@@ -29,10 +36,11 @@ if(mediaQuery.matches){
 }
 else{
   root.render(
-    
     <React.StrictMode>
       <div id='outerContainer'>
-        <MainSection />
+        <MainSection 
+          isWindow={window.innerWidth}
+        />
       </div>
     </React.StrictMode>,
   )
@@ -40,16 +48,22 @@ else{
 
 // Acts as event listener for window size changes
 mediaQuery.onchange = (e) => {
+
+  console.log(window.innerWidth);
+
   // Manipulating DOM section
   if (e.matches) {
 
     console.log('After first call w/ mainsection and mobileextension');
-    console.log(window.innerWidth);
+
+
     root.render(
     <React.StrictMode>
       <div id='outerContainer'>
-     <MainSection />
-     <MobileExtension />
+        <MainSection 
+          isWindow={window.innerWidth}
+        />
+        {/* <MobileExtension /> */}
      </div>
     </React.StrictMode>,
     )
@@ -59,7 +73,9 @@ mediaQuery.onchange = (e) => {
     root.render(
       <React.StrictMode>
         <div id='outerContainer'>
-        <MainSection />
+          <MainSection 
+            isWindow={window.innerWidth}
+          />
         </div>
       </React.StrictMode>,
     )

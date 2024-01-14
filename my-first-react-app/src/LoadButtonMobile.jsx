@@ -3,8 +3,7 @@ import loadIcon from './assets/refresh-outline.svg'
 import './index.css'
 
 function LoadButtonMobile({
-    setupEducationInfo,
-    setupPresets
+    runEducationUpdate
   }){
   
     // console.log('Opened LoadButtonMobile.jsx');
@@ -28,7 +27,7 @@ function LoadButtonMobile({
       
       <div className="formatOptionsInner1" 
 
-        // onClick={setupPresets}
+        onClick={runEducationUpdate}
       
         onMouseEnter={() => setHovered(true)} 
         onMouseLeave={() => setHovered(false)}

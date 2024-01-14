@@ -1947,7 +1947,12 @@ function DownloadButton({
 }
 
 
-function MainSection() {
+function MainSection({
+  isWindow
+}) {
+
+  // Set up state for turning off/on MobileExtension.jsx
+  const [isMobileExtension, setMobileExtension] = useState(false);
 
   // Set up state for dropDown menu components
   const [activeIndex, setActiveIndex] = useState(0);
@@ -2295,6 +2300,28 @@ function MainSection() {
     }
   }
 
+  const mediaQuery = window.matchMedia("(max-width: 1290px)");
+
+  // upon render perform check
+
+  // initial render - on render check if matches (< 1291px) 
+  if(mediaQuery.matches){
+
+    if(mediaQuery.matches){
+
+
+    }
+    
+  }
+  
+  // concurrent watch - 
+  mediaQuery.onchange = (e) => {
+
+    if(e.matches){
+
+
+    }
+  }
 
     return <>
     <div className="sideBar">
@@ -2378,7 +2405,8 @@ function MainSection() {
           <a href='https://github.com/rsterenchak' target="_blank"><img className="footLogo" src={gitIcon} alt={'github icon link'}></img></a>
         </div>
       </div>
-    </div>
+    </div> {/** End of sideBar Section */}
+
     <div className="mainSection">
       <div className="leftSpace" />
       <div className="resumeSec">
@@ -2432,7 +2460,22 @@ function MainSection() {
         </div>
       </div>
       <div className="rightSpace" />
-    </div>
+    </div> {/** End of Main Section */}
+
+    {isMobileExtension ? 
+    (
+
+      <>
+        <MobileExtension />
+      </>
+    ) : (
+
+      <>
+
+      </>
+    )
+    }
+
   </>;
   }
 

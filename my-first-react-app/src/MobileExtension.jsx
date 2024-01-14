@@ -3,7 +3,9 @@ import LoadButtonMobile from './LoadButtonMobile.jsx';
 import ClearButtonMobile from './ClearButtonMobile.jsx';
 import './index.css'
 
-function MobileExtension() {
+function MobileExtension({
+
+}) {
   
   
   return (
@@ -12,22 +14,12 @@ function MobileExtension() {
         <div id='innerFoot1'>
           <div id='formatOptionsNew'>
 
-            {/** Load Example Section */}
-{/*             <div id='formatOptionsInner1'>
-              <div id='formatOptionsLogo1'></div>
-              <div id='formatOptionsName1'></div>
-            </div> */}
+            <LoadButtonMobile 
+            />
 
-            <LoadButtonMobile />
+            <ClearButtonMobile
 
-
-            {/** Clear Resume Section */}
-{/*             <div id='formatOptionsInner2'>
-              <div id='formatOptionsLogo2'></div>
-              <div id='formatOptionsName2'></div>              
-            </div> */}
-
-            <ClearButtonMobile />
+            />
 
           </div>
 
