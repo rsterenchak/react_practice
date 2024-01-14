@@ -12,7 +12,7 @@ import dropIconDown from './assets/caret-down-outline.svg'
 import gitIcon from './assets/github.svg'
 
 import loadIcon from './assets/refresh-outline.svg'
-import downloadIcon from './assets/download-outline.svg'
+import trashIcon from './assets/trash-outline.svg'
 
 import mailIcon from './assets/mail.svg'
 import phoneIcon from './assets/call.svg'
@@ -1913,7 +1913,10 @@ function LoadButton({
 
 }
 
-function DownloadButton(){
+function DownloadButton({
+  clearResume
+
+}){
 
   const [isHovered, setHovered] = useState(false);
   const [isMouse, setMouseClick] = useState(false); // setup another state for click down/up
@@ -1931,15 +1934,17 @@ function DownloadButton(){
 
     
     <div className="downloadBox"
-    onMouseEnter={() => setHovered(true)} 
-    onMouseLeave={() => setHovered(false)}
+      onClick={clearResume}
+      onMouseEnter={() => setHovered(true)} 
+      onMouseLeave={() => setHovered(false)}
 
-    onMouseDown={() => setMouseClick(true)} 
-    onMouseUp={() => setMouseClick(false)}
+      onMouseDown={() => setMouseClick(true)} 
+      onMouseUp={() => setMouseClick(false)}
 
-    style={boxStyle}>
-      <img className="downloadLogo" src={downloadIcon}/>
-      <div className="downloadName">Download (.pdf)</div>
+      style={boxStyle}
+      >
+      <img className="downloadLogo" src={trashIcon}/>
+      <div className="downloadName">Clear Resume</div>
     </div>
 
   ); 
@@ -2051,7 +2056,6 @@ function MainSection() {
   ]
       
     
-      // onClick - run function that sets up pre-set values for state in Main()
   function updateForPresets(){
     
     console.log('run updateForPresets function');
@@ -2063,8 +2067,27 @@ function MainSection() {
 
     setEdList(presetEducation) // Adds Education Presets to DOM
     setExList(presetExperience) // Adds Experience Presets to DOM
+
+    setActiveIndex(0)// change dropdown set to cause a page re-render
+
   }      
 
+
+  function clearResumeInfo(){
+
+    console.log('run clearResumeInfo function');
+
+    setActiveName('');
+    setActiveEmail('');
+    setActivePhone('');
+    setActiveAddress('');
+
+    setEdList(educationList) // Adds Education Presets to DOM
+    setExList(experienceList) // Adds Experience Presets to DOM   
+    
+    setActiveIndex(0)// change dropdown set to cause a page re-render
+
+  }
 
   function handleNameChange (e){
     setActiveName(e.target.value);
@@ -2348,7 +2371,9 @@ function MainSection() {
               setupPresets={() => updateForPresets()}
             />
             
-            <DownloadButton />
+            <DownloadButton 
+              clearResume={() => clearResumeInfo()}
+            />
 
           </div>
         </div>
