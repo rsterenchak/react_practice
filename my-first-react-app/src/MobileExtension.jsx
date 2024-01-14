@@ -1,23 +1,34 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import LoadButtonMobile from './LoadButtonMobile.jsx';
+import ClearButtonMobile from './ClearButtonMobile.jsx';
 import './index.css'
 
 function MobileExtension() {
-  // console.log('entered mobileExtension component')
+  
+  
   return (
       <div id='footSection'>
 
         <div id='innerFoot1'>
           <div id='formatOptionsNew'>
-            <div id='formatOptionsInner1'>
+
+            {/** Load Example Section */}
+{/*             <div id='formatOptionsInner1'>
               <div id='formatOptionsLogo1'></div>
               <div id='formatOptionsName1'></div>
-            </div>
-            <div id='formatOptionsInner2'>
-            <div id='formatOptionsLogo2'></div>
+            </div> */}
+
+            <LoadButtonMobile />
+
+
+            {/** Clear Resume Section */}
+{/*             <div id='formatOptionsInner2'>
+              <div id='formatOptionsLogo2'></div>
               <div id='formatOptionsName2'></div>              
-            </div>
+            </div> */}
+
+            <ClearButtonMobile />
+
           </div>
 
         </div>

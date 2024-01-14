@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import MobileExtension from './MobileExtension.jsx';
-import Mobile from './MobileExtension.jsx'
 import personalIcon from './assets/personal-outline.svg'
 import bookIcon from './assets/book-outline.svg'
 import bagIcon from './assets/bag-outline.svg'
@@ -1967,8 +1966,8 @@ function MainSection() {
   let educationList = [];
   let experienceList = []; 
 
-  const [activeEducation, setActiveEducation] = useState(educationList);
-  const [activeExperience, setActiveExperience] = useState(experienceList);
+  const [activeEducation, setActiveEducation] = useState(educationList); // ***** create another state or lift this one up *****
+  const [activeExperience, setActiveExperience] = useState(experienceList); // ***** create another state or lift this one up *****
 
   const [activeEdClickable, setEdClickable] = useState(true);
   const [activeExClickable, setExClickable] = useState(true); 

@@ -1064,32 +1064,32 @@ ul {
     border-radius: 35px;
     height: 225px;
     width: 100%;
+    gap: 20px;
     max-width: 500px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 
   }
   
-  #formatOptionsInner1 {
+  .formatOptionsInner1 {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 4fr;
+    height: 50px;
+    width: 360px;
+    border-radius: 16px;  
+    background-color: #ff6262;
+  }
+  
+  .formatOptionsLogo1 {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;      
-    height: 70px;
-    width: 100%;
-    max-width: 400px;    
+    align-self: center;
+    justify-self: end;  
+    height: 40px;
+    width: auto;
+  }
+  
+  .formatOptionsName1 {
 
-  }
-  
-  #formatOptionsLogo1 {
-    height: 50px;
-    width: 60px;
-    border: 1px solid red;
-  }
-  
-  #formatOptionsName1 {
-    height: 50px;
-    width: 250px;
-    border: 1px solid blue;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1097,39 +1097,38 @@ ul {
     
   }
   
-  #formatOptionsName1::before {
+  .formatOptionsName1::before {
     content: 'Load Example';
     
   }
   
-  #formatOptionsInner2 {
-    display: flex;
-    flex-direction: row; 
-    justify-content: center;
-    align-items: center;     
-    height: 70px;
-    width: 100%;
-    max-width: 400px;    
+  .formatOptionsInner2 {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 4fr;
+    height: 50px;
+    width: 360px;
+    border-radius: 16px;  
+    background-color: #ff6262;  
   }  
   
-  #formatOptionsLogo2 {
-    height: 50px;
-    width: 60px;
-    border: 1px solid red;
+  .formatOptionsLogo2 {
+    display: flex;
+    align-self: center;
+    justify-self: end;  
+    height: 40px;
+    width: auto;
   }
   
-  #formatOptionsName2 {
-    height: 50px;
-    width: 250px;
-    border: 1px solid blue;
+  .formatOptionsName2 {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
   }  
   
-  #formatOptionsName2::before {
-    content: 'Download (.pdf)';
+  .formatOptionsName2::before {
+    content: 'Clear Resume';
     
   }
   
@@ -1329,10 +1328,12 @@ ul {
   
   #formatOptionsNew {
     max-width: 350px;
+    border: 1px solid red;
   }
   
   #formatOptionsInner1 {
     max-width: 325px;
+    border: 1px solid red;
   }
   
   #formatOptionsInner2 {
