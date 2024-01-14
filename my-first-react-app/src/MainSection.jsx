@@ -39,11 +39,6 @@ function DropButton1({
 
     const [isHighlighted, setHighlighted] = useState(false);
 
-    // const [isName, setName] = useState(''); // lift Up to mainSection
-    // const [isEmail, setEmail] = useState(''); // lift Up to mainSection
-    // const [isPhone, setPhone] = useState(''); // lift Up to mainSection
-    // const [isAddress, setAddress] = useState(''); // lift Up to mainSection
-
 
 
   return (
@@ -2035,7 +2030,7 @@ function MainSection() {
       Degree: 'Associates',
       StartDate: '2020-01-01',
       EndDate: '2023-01-01',
-      Location: 'Redmond, WA',
+      Location: 'Somewhere',
     }
     
   ]
@@ -2050,7 +2045,7 @@ function MainSection() {
       Description: 'sdkfklsdjafl',
       StartDate: '2021-10-23',
       EndDate: '2024-06-17',
-      Location: 'Redmond, WA',
+      Location: 'Somewhere',
     }
     
   ]
